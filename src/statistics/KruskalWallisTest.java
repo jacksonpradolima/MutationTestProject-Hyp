@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package statistics;
+package hyperheuristics.statistics;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class KruskalWallisTest {
 
-    public HashMap<String, HashMap<String, Boolean>> test(HashMap<String, double[]> values) throws IOException, InterruptedException {
+    public static HashMap<String, HashMap<String, Boolean>> test(HashMap<String, double[]> values) throws IOException, InterruptedException {
         String script = "require(pgirmess)\n";
         script += "ARRAY <- c(";
         int size = 0;
@@ -98,10 +98,9 @@ public class KruskalWallisTest {
                         }
                     }
                 }
-                scanner.close();
             }
         }
-        System.out.println(script);
+
         scriptFile.delete();
         outputFile.delete();
 

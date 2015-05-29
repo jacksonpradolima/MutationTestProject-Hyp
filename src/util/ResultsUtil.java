@@ -5,6 +5,7 @@
  */
 package util;
 
+import hyperheuristics.statistics.KruskalWallisTest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +23,6 @@ import jmetal.util.NonDominatedSolutionList;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import statistics.HypervolumeCalculator;
-import statistics.KruskalWallisTest;
 
 /**
  *
