@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/lowlevelheuristic/LowLevelHeuristicUtils.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/jmetal/extend/Operator.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/util/comparisons/ComputeIndicators.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/util/comparisons/ComputeEffectSize.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/lowlevelheuristic/LowLevelHeuristic.java</file>
+        </group>
     </open-files>
 </project-private>
