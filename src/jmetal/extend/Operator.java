@@ -10,7 +10,6 @@ package jmetal.extend;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.HashMap;
-import problem.MTProblem;
 
 import jmetal.util.JMException;
 
@@ -44,7 +43,7 @@ public abstract class Operator implements Serializable {
    *                <code>Solution</code>.
    * @return An object reference. The returned value depends on the operator. 
    */
-  abstract public Object execute(Object object, MTProblem problem) throws JMException ;
+  abstract public Object execute(Object object) throws JMException ;
 
   
   /**

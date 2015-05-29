@@ -17,7 +17,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package algorithm;
 
-import comparators.LowLevelHeuristicComparatorFactory;
+import comparators.ComparatorFactory;
 import java.util.Comparator;
 import jmetal.core.*;
 import jmetal.qualityIndicator.QualityIndicator;
@@ -26,6 +26,7 @@ import jmetal.util.JMException;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
 import lowlevelheuristic.LowLevelHeuristic;
+import lowlevelheuristic.HeuristicType;
 import lowlevelheuristic.LowLevelHeuristicUtils;
 
 /**
@@ -54,9 +55,7 @@ public class hhNSGAII extends Algorithm {
         int populationSize;
         int maxEvaluations;
         int evaluations;
-        Comparator<LowLevelHeuristic> heuristicFunctionComparator;
-        LowLevelHeuristicUtils lowLevelHeuristicUtils = new LowLevelHeuristicUtils();
-
+        
         QualityIndicator indicators; // QualityIndicator object
         int requiredEvaluations; // Use in the example of use of the
         // indicators object (see below)
@@ -74,8 +73,13 @@ public class hhNSGAII extends Algorithm {
         maxEvaluations = ((Integer) getInputParameter("maxEvaluations")).intValue();
         indicators = (QualityIndicator) getInputParameter("indicators");
 
-        String heuristicFunction = (String) getInputParameter("heuristicFunction");
-        heuristicFunctionComparator = LowLevelHeuristicComparatorFactory.createComparator(heuristicFunction);
+        // Get type of heuristic function
+        HeuristicType heuristicFunction = HeuristicType.valueOf((String) getInputParameter("heuristicFunction"));
+       
+        // Define the heuristic function
+        Comparator<LowLevelHeuristic> heuristicFunctionComparator = ComparatorFactory.createComparator(heuristicFunction);
+        
+        LowLevelHeuristicUtils lowLevelHeuristicUtils = new LowLevelHeuristicUtils();
 
         //Initialize the variables
         population = new SolutionSet(populationSize);
@@ -100,6 +104,7 @@ public class hhNSGAII extends Algorithm {
 
         // Generations 
         while (evaluations < maxEvaluations) {
+            // We can use for something :D
             generation++;
 
             // Create the offSpring solutionSet      
@@ -107,7 +112,7 @@ public class hhNSGAII extends Algorithm {
             Solution[] parents = new Solution[2];
             for (int i = 0; i < (populationSize / 2); i++) {
                 //Get the best hyperheuristics
-                LowLevelHeuristic applyingHeuristic = lowLevelHeuristicUtils.getApplyingHeuristic(heuristicFunction, heuristicFunctionComparator);
+                LowLevelHeuristic applyingHeuristic = lowLevelHeuristicUtils.getApplyingHeuristic(heuristicFunctionComparator);
 
                 //obtain parents
                 parents[0] = (Solution) selectionOperator.execute(population);
@@ -123,21 +128,13 @@ public class hhNSGAII extends Algorithm {
                 offspringPopulation.add(offSpring[0]);
                 offspringPopulation.add(offSpring[1]);
 
-                i++;
                 evaluations += 2;
 
                 //Update rank
-                applyingHeuristic.updateRank(parents, offSpring);
-                if (LowLevelHeuristic.MULTI_ARMED_BANDIT.equals(heuristicFunction)) {
-                    applyingHeuristic.creditAssignment(lowLevelHeuristicUtils.getLowLevelHeuristics());
-                }
+                applyingHeuristic.updateRank(parents, offSpring, heuristicFunction, lowLevelHeuristicUtils.getLowLevelHeuristics());
 
                 //Update time elapsed from heuristics not executed
-                for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristicUtils.getLowLevelHeuristics()) {
-                    if (!lowLevelHeuristic.equals(applyingHeuristic)) {
-                        lowLevelHeuristic.notExecuted();
-                    }
-                }
+                applyingHeuristic.updateElapseTime(lowLevelHeuristicUtils.getLowLevelHeuristics(), applyingHeuristic);
             } // for
 
             // Create the solutionSet union of solutionSet and offSpring

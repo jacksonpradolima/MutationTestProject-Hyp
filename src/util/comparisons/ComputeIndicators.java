@@ -17,6 +17,7 @@ import jmetal.qualityIndicator.InvertedGenerationalDistance;
 import jmetal.qualityIndicator.Spread;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.extend.NonDominatedSolutionList;
+import lowlevelheuristic.HeuristicType;
 import lowlevelheuristic.LowLevelHeuristic;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -43,10 +44,9 @@ public class ComputeIndicators {
             "OO_JBoss"
         };
 
-        String[] heuristicFunctions = new String[]{
-            LowLevelHeuristic.CHOICE_FUNCTION,
-            LowLevelHeuristic.MULTI_ARMED_BANDIT, 
-            LowLevelHeuristic.RANDOM
+        HeuristicType[] heuristicFunctions = new HeuristicType[]{
+            HeuristicType.ChoiceFunction,
+            HeuristicType.MultiArmedBandit
         };
 
         String[] algorithms = new String[]{
@@ -109,7 +109,7 @@ public class ComputeIndicators {
 
                     for (String algorithm : algorithms) {
                         latexTableBuilder.append("c");
-                        for (String heuristicFunction : heuristicFunctions) {
+                        for (HeuristicType heuristicFunction : heuristicFunctions) {
                             latexTableBuilder.append("c");
                         }
                     }
@@ -120,8 +120,8 @@ public class ComputeIndicators {
                             .append("\t\t\\textbf{System}");
                     for (String algorithm : algorithms) {
                         latexTableBuilder.append(" & \\textbf{").append(algorithm).append("}");
-                        for (String heuristicFunction : heuristicFunctions) {
-                            latexTableBuilder.append(" & \\textbf{").append(algorithm).append("-").append(heuristicFunction).append("}");
+                        for (HeuristicType heuristicFunction : heuristicFunctions) {
+                            latexTableBuilder.append(" & \\textbf{").append(algorithm).append("-").append(heuristicFunction.toString()).append("}");
                         }
                     }
                     latexTableBuilder
@@ -137,8 +137,8 @@ public class ComputeIndicators {
                                 SolutionSet mecbaFront = metricsUtil.readNonDominatedSolutionSet("resultado/" + algorithm.toLowerCase().replaceAll("-", "") + "/" + problem + "_Comb_" + objectives + "obj/All_FUN_" + algorithm.toLowerCase().replaceAll("-", "") + "-" + problem);
                                 trueFront.addAll(mecbaFront);
 
-                                for (String hyperHeuristic : heuristicFunctions) {
-                                    SolutionSet front = metricsUtil.readNonDominatedSolutionSet("experiment/" + algorithm + "/" + objectives + "objectives/" + hyperHeuristic + "/" + problem + "/FUN.txt");
+                                for (HeuristicType hyperHeuristic : heuristicFunctions) {
+                                    SolutionSet front = metricsUtil.readNonDominatedSolutionSet("experiment/" + algorithm + "/" + objectives + "objectives/" + hyperHeuristic.toString() + "/" + problem + "/FUN.txt");
                                     trueFront.addAll(front);
                                 }
                             }
@@ -156,12 +156,13 @@ public class ComputeIndicators {
                             gdMap.put(algorithm, gd.generationalDistance(mecbaFront, trueFrontMatrix, objectives));
                             spreadMap.put(algorithm, spread.spread(mecbaFront, trueFrontMatrix, objectives));
                             coverageMap.put(algorithm, coverage.coverage(mecbaFront, trueFrontMatrix));
-                            for (String heuristic : heuristicFunctions) {
-                                double[][] heuristicFront = metricsUtil.readFront("experiment/" + algorithm + "/" + objectives + "objectives/" + heuristic + "/" + problem + "/FUN.txt");
-                                igdMap.put(algorithm + "-" + heuristic, igd.invertedGenerationalDistance(heuristicFront, trueFrontMatrix, objectives));
-                                gdMap.put(algorithm + "-" + heuristic, gd.generationalDistance(heuristicFront, trueFrontMatrix, objectives));
-                                spreadMap.put(algorithm + "-" + heuristic, spread.spread(heuristicFront, trueFrontMatrix, objectives));
-                                coverageMap.put(algorithm + "-" + heuristic, coverage.coverage(heuristicFront, trueFrontMatrix));
+                            for (HeuristicType heuristic : heuristicFunctions) {
+                                String heuristicS = heuristic.toString();
+                                double[][] heuristicFront = metricsUtil.readFront("experiment/" + algorithm + "/" + objectives + "objectives/" + heuristicS + "/" + problem + "/FUN.txt");
+                                igdMap.put(algorithm + "-" + heuristicS, igd.invertedGenerationalDistance(heuristicFront, trueFrontMatrix, objectives));
+                                gdMap.put(algorithm + "-" + heuristicS, gd.generationalDistance(heuristicFront, trueFrontMatrix, objectives));
+                                spreadMap.put(algorithm + "-" + heuristicS, spread.spread(heuristicFront, trueFrontMatrix, objectives));
+                                coverageMap.put(algorithm + "-" + heuristicS, coverage.coverage(heuristicFront, trueFrontMatrix));
                             }
                         }
 
@@ -228,8 +229,8 @@ public class ComputeIndicators {
                             int i = 0;
                             for (String algorithm : algorithms) {
                                 newHeuristicFunctions[i++] = algorithm;
-                                for (String heuristicFunction : heuristicFunctions) {
-                                    newHeuristicFunctions[i++] = algorithm + "-" + heuristicFunction;
+                                for (HeuristicType heuristicFunction : heuristicFunctions) {
+                                    newHeuristicFunctions[i++] = algorithm + "-" + heuristicFunction.toString();
                                 }
                             }
                         }
@@ -303,7 +304,7 @@ public class ComputeIndicators {
 
                     for (String algorithm : algorithms) {
                         latexTableBuilder.append("c");
-                        for (String heuristicFunction : heuristicFunctions) {
+                        for (HeuristicType heuristicFunction : heuristicFunctions) {
                             latexTableBuilder.append("c");
                         }
                     }
@@ -314,8 +315,8 @@ public class ComputeIndicators {
                             .append("\t\t\\textbf{System}");
                     for (String algorithm : algorithms) {
                         latexTableBuilder.append(" & \\textbf{").append(algorithm).append("}");
-                        for (String heuristicFunction : heuristicFunctions) {
-                            latexTableBuilder.append(" & \\textbf{").append(algorithm).append("-").append(heuristicFunction).append("}");
+                        for (HeuristicType heuristicFunction : heuristicFunctions) {
+                            latexTableBuilder.append(" & \\textbf{").append(algorithm).append("-").append(heuristicFunction.toString()).append("}");
                         }
                     }
                     latexTableBuilder
@@ -331,8 +332,8 @@ public class ComputeIndicators {
                                 SolutionSet mecbaFront = metricsUtil.readNonDominatedSolutionSet("resultado/" + algorithm.toLowerCase().replaceAll("-", "") + "/" + problem + "_Comb_" + objectives + "obj/All_FUN_" + algorithm.toLowerCase().replaceAll("-", "") + "-" + problem);
                                 trueFront.addAll(mecbaFront);
 
-                                for (String hyperHeuristic : heuristicFunctions) {
-                                    SolutionSet front = metricsUtil.readNonDominatedSolutionSet("experiment/" + algorithm + "/" + objectives + "objectives/" + hyperHeuristic + "/" + problem + "/FUN.txt");
+                                for (HeuristicType hyperHeuristic : heuristicFunctions) {
+                                    SolutionSet front = metricsUtil.readNonDominatedSolutionSet("experiment/" + algorithm + "/" + objectives + "objectives/" + hyperHeuristic.toString() + "/" + problem + "/FUN.txt");
                                     trueFront.addAll(front);
                                 }
                             }
@@ -367,23 +368,25 @@ public class ComputeIndicators {
                         }
 
                         for (String algorithm : algorithms) {
-                            for (String heuristic : heuristicFunctions) {
+                            for (HeuristicType heuristic : heuristicFunctions) {
+                                String heuristicS = heuristic.toString();
+                                
                                 double[] hhIGDs = new double[EXECUTIONS];
                                 double[] hhGDs = new double[EXECUTIONS];
                                 double[] hhSpreads = new double[EXECUTIONS];
                                 double[] hhCoverages = new double[EXECUTIONS];
                                 for (int i = 0; i < EXECUTIONS; i++) {
-                                    double[][] hhFront = metricsUtil.readFront("experiment/" + algorithm + "/" + objectives + "objectives/" + heuristic + "/" + problem + "/EXECUTION_" + i + "/FUN.txt");
+                                    double[][] hhFront = metricsUtil.readFront("experiment/" + algorithm + "/" + objectives + "objectives/" + heuristicS + "/" + problem + "/EXECUTION_" + i + "/FUN.txt");
 
                                     hhIGDs[i] = igd.invertedGenerationalDistance(hhFront, trueFrontMatrix, objectives);
                                     hhGDs[i] = gd.generationalDistance(hhFront, trueFrontMatrix, objectives);
                                     hhSpreads[i] = spread.spread(hhFront, trueFrontMatrix, objectives);
                                     hhCoverages[i] = coverage.coverage(hhFront, trueFrontMatrix);
                                 }
-                                igdMap.put(algorithm + "-" + heuristic, hhIGDs);
-                                gdMap.put(algorithm + "-" + heuristic, hhGDs);
-                                spreadMap.put(algorithm + "-" + heuristic, hhSpreads);
-                                coverageMap.put(algorithm + "-" + heuristic, hhCoverages);
+                                igdMap.put(algorithm + "-" + heuristicS, hhIGDs);
+                                gdMap.put(algorithm + "-" + heuristicS, hhGDs);
+                                spreadMap.put(algorithm + "-" + heuristicS, hhSpreads);
+                                coverageMap.put(algorithm + "-" + heuristicS, hhCoverages);
                             }
                         }
 
@@ -454,8 +457,8 @@ public class ComputeIndicators {
                             int i = 0;
                             for (String algorithm : algorithms) {
                                 newHeuristicFunctions[i++] = algorithm;
-                                for (String heuristicFunction : heuristicFunctions) {
-                                    newHeuristicFunctions[i++] = algorithm + "-" + heuristicFunction;
+                                for (HeuristicType heuristicFunction : heuristicFunctions) {
+                                    newHeuristicFunctions[i++] = algorithm + "-" + heuristicFunction.toString();
                                 }
                             }
                         }

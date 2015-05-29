@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import jmetal.core.Operator;
 import jmetal.core.Solution;
 import jmetal.operators.crossover.Crossover;
 import jmetal.operators.mutation.Mutation;
@@ -18,14 +17,9 @@ import jmetal.util.comparators.DominanceComparator;
 
 /**
  *
- * @author giovaniguizzo
+ * @author Prado Lima
  */
 public class LowLevelHeuristic {
-
-    //Constants - Avaliable Heuristic Functions.
-    public static final String CHOICE_FUNCTION = "ChoiceFunction";
-    public static final String MULTI_ARMED_BANDIT = "MultiArmedBandit";
-    public static final String RANDOM = "Random";
 
     /**
      * Rank weight.
@@ -86,7 +80,7 @@ public class LowLevelHeuristic {
     private Mutation mutationOperator;
 
     public LowLevelHeuristic(HashMap<String, Object> parameters) {
-      //  this.parameters_ = parameters;
+        //  this.parameters_ = parameters;
         this.dominanceComparator = new DominanceComparator();
 
         this.rank = 0.5;
@@ -128,7 +122,7 @@ public class LowLevelHeuristic {
             c = (double) parameters.get("c");
         }
     }
-    
+
     /*
      Getters and setters.
      */
@@ -197,7 +191,7 @@ public class LowLevelHeuristic {
         }
     }
 
-    public void updateRank(Solution[] parents, Solution[] offsprings) {
+    public void updateRank(Solution[] parents, Solution[] offsprings, HeuristicType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
         rank = 0;
         for (Solution parent : parents) {
             for (Solution offspring : offsprings) {
@@ -205,6 +199,18 @@ public class LowLevelHeuristic {
             }
         }
         rank /= ((double) parents.length * (double) offsprings.length);
+
+        if (HeuristicType.MultiArmedBandit == heuristicFunction) {
+            creditAssignment(lowLevelHeuristics);
+        }
+    }
+
+    public void updateElapseTime(List<LowLevelHeuristic> lowLevelHeuristics, LowLevelHeuristic applyingHeuristic) {
+        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
+            if (!lowLevelHeuristic.equals(applyingHeuristic)) {
+                lowLevelHeuristic.notExecuted();
+            }
+        }
     }
 
     public double getChoiceFunctionValue() {
@@ -250,12 +256,6 @@ public class LowLevelHeuristic {
         executed();
 
         return offSpring;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
     }
 
     @Override

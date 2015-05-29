@@ -10,19 +10,19 @@ import java.util.Comparator;
 
 /**
  *
- * @author giovaniguizzo
+ * @author gian
  */
-public class LowLevelHeuristicChoiceFunctionComparator implements Comparator<LowLevelHeuristic> {
+public class MultiArmedBanditComparator  implements Comparator<LowLevelHeuristic> {
 
     @Override
     public int compare(LowLevelHeuristic o1, LowLevelHeuristic o2) {
-        if (o1.getChoiceFunctionValue() > o2.getChoiceFunctionValue()) {
+        if (o1.getMultiArmedBanditValue() > o2.getMultiArmedBanditValue()) {
             return -1;
-        } else if (o1.getChoiceFunctionValue() < o2.getChoiceFunctionValue()) {
+        } else if (o1.getMultiArmedBanditValue() < o2.getMultiArmedBanditValue()) {
             return 1;
         } else {
             return 0;
         }
     }
-
+    
 }

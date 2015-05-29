@@ -28,11 +28,6 @@ public class LowLevelHeuristicUtils {
     private final List<LowLevelHeuristic> lowLevelHeuristics;
     private FileWriter lowLevelHeuristicsRankWriter;
     private FileWriter lowLevelHeuristicsTimeWriter;
-    
-    public List<LowLevelHeuristic> getLowLevelHeuristics()
-    {
-        return this.lowLevelHeuristics;
-    }
 
     public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
         LowLevelHeuristic lowLevelHeuristic = new LowLevelHeuristic(parameters);
@@ -44,16 +39,6 @@ public class LowLevelHeuristicUtils {
         }
     }
 
-    public LowLevelHeuristic removeLowLevelHeuristic(String name) {
-        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
-            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
-            if (lowLevelHeuristic.getName().equals(name)) {
-                return lowLevelHeuristics.remove(i);
-            }
-        }
-        return null;
-    }
-
     public void clearLowLeverHeuristics() {
         lowLevelHeuristics.clear();
     }
@@ -63,6 +48,16 @@ public class LowLevelHeuristicUtils {
         for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
             lowLevelHeuristic.clearAllValues();
         }
+    }
+
+    public void closeLowLevelHeuristicsRankPath() throws IOException {
+        if (lowLevelHeuristicsRankWriter != null) {
+            lowLevelHeuristicsRankWriter.close();
+        }
+    }
+
+    public List<LowLevelHeuristic> getLowLevelHeuristics() {
+        return this.lowLevelHeuristics;
     }
 
     public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
@@ -78,6 +73,33 @@ public class LowLevelHeuristicUtils {
         return lowLevelHeuristics.size();
     }
 
+    public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
+        List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
+        Collections.sort(allLowLevelHeuristics, comparator);
+        List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
+
+        //Find the best tied heuristics
+        Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
+        LowLevelHeuristic heuristic;
+        LowLevelHeuristic nextHeuristic = iterator.next();
+        do {
+            heuristic = nextHeuristic;
+            applyingHeuristics.add(heuristic);
+        } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
+
+        return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
+    }
+
+    public LowLevelHeuristic removeLowLevelHeuristic(String name) {
+        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
+            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
+            if (lowLevelHeuristic.getName().equals(name)) {
+                return lowLevelHeuristics.remove(i);
+            }
+        }
+        return null;
+    }
+
     public void setLowLevelHeuristicsRankPath(String path) throws IOException {
         if (lowLevelHeuristicsRankWriter != null) {
             lowLevelHeuristicsRankWriter.close();
@@ -90,32 +112,5 @@ public class LowLevelHeuristicUtils {
             lowLevelHeuristicsTimeWriter.close();
         }
         lowLevelHeuristicsTimeWriter = new FileWriter(path);
-    }
-
-    public void closeLowLevelHeuristicsRankPath() throws IOException {
-        if (lowLevelHeuristicsRankWriter != null) {
-            lowLevelHeuristicsRankWriter.close();
-        }
-    }
-
-    public LowLevelHeuristic getApplyingHeuristic(String heuristicFunction, Comparator<LowLevelHeuristic> comparator) {
-        if (heuristicFunction.equals(LowLevelHeuristic.RANDOM) || comparator == null) {
-            return lowLevelHeuristics.get(PseudoRandom.randInt(0, lowLevelHeuristics.size() - 1));
-        } else {
-            List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
-            Collections.sort(allLowLevelHeuristics, comparator);
-            List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
-
-            //Find the best tied heuristics
-            Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
-            LowLevelHeuristic heuristic;
-            LowLevelHeuristic nextHeuristic = iterator.next();
-            do {
-                heuristic = nextHeuristic;
-                applyingHeuristics.add(heuristic);
-            } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
-
-            return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
-        }
     }
 }

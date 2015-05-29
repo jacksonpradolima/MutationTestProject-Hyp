@@ -12,6 +12,7 @@ import java.util.HashMap;
 import jmetal.extend.Coverage;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.extend.NonDominatedSolutionList;
+import lowlevelheuristic.HeuristicType;
 import lowlevelheuristic.LowLevelHeuristic;
 import statistics.EffectSize;
 import util.HypervolumeHandler;
@@ -38,10 +39,9 @@ public class ComputeEffectSize {
             "OO_JBoss"
         };
 
-        String[] heuristicFunctions = new String[]{
-            LowLevelHeuristic.CHOICE_FUNCTION,
-            LowLevelHeuristic.MULTI_ARMED_BANDIT,
-            LowLevelHeuristic.RANDOM
+        HeuristicType[] heuristicFunctions = new HeuristicType[]{
+            HeuristicType.ChoiceFunction,
+            HeuristicType.MultiArmedBandit
         };
 
         MetricsUtil metricsUtil = new MetricsUtil();
@@ -92,8 +92,8 @@ public class ComputeEffectSize {
                 hypervolumeLatexTableBuilder.append("\t\t\\toprule\n");
                 hypervolumeLatexTableBuilder.append("\t\t\\textbf{System}");
 
-                for (String heuristicFunction : heuristicFunctions) {
-                    hypervolumeLatexTableBuilder.append(" & \\textbf{MOEA/").append(heuristicFunction).append("}");
+                for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    hypervolumeLatexTableBuilder.append(" & \\textbf{MOEA/").append(heuristicFunction.toString()).append("}");
                 }
 
                 for (int i = 0; i < heuristicFunctions.length - 1; i++) {
@@ -121,10 +121,10 @@ public class ComputeEffectSize {
                         truePareto.addAll(metricsUtil.readNonDominatedSolutionSet(mecbaDirectory + "FUN_nsgaii-" + problem + "-" + i + ".NaoDominadas"));
                     }
 
-                    for (String heuristicFunction : heuristicFunctions) {
+                    for (HeuristicType heuristicFunction : heuristicFunctions) {
                         String path = "experiment/";
                         path += objectives + "objectives/";
-                        String hyperheuristicDirectory = path + heuristicFunction + "/" + problem + "/";
+                        String hyperheuristicDirectory = path + heuristicFunction.toString() + "/" + problem + "/";
                         for (int j = 0; j < executions; j++) {
                             hypervolumeHandler.addParetoFront(hyperheuristicDirectory + "EXECUTION_" + j + "/FUN.txt");
                             truePareto.addAll(metricsUtil.readNonDominatedSolutionSet(hyperheuristicDirectory + "EXECUTION_" + j + "/FUN.txt"));
@@ -144,10 +144,11 @@ public class ComputeEffectSize {
                     hypervolumeHashMap.put("MOEA", mecbaHypervolumes);
                     coverageHashMap.put("MOEA", mecbaCoverages);
 
-                    for (String heuristicFunction : heuristicFunctions) {
+                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                        String heuristicFunctionS = heuristicFunction.toString();
                         String path = "experiment/";
                         path += objectives + "objectives/";
-                        String hyperheuristicDirectory = path + heuristicFunction + "/" + problem + "/";
+                        String hyperheuristicDirectory = path + heuristicFunctionS + "/" + problem + "/";
 
                         double[] hhHypervolumes = new double[executions];
                         double[] hhCoverages = new double[executions];
@@ -157,8 +158,8 @@ public class ComputeEffectSize {
                             hhCoverages[j] = coverage.coverage(metricsUtil.readFront(hyperheuristicDirectory + "EXECUTION_" + j + "/FUN.txt"), truePareto.writeObjectivesToMatrix());
                         }
 
-                        hypervolumeHashMap.put(heuristicFunction, hhHypervolumes);
-                        coverageHashMap.put(heuristicFunction, hhCoverages);
+                        hypervolumeHashMap.put(heuristicFunctionS, hhHypervolumes);
+                        coverageHashMap.put(heuristicFunctionS, hhCoverages);
                     }
 
                     HashMap<String, HashMap<String, Double>> hypervolumeEffectSize = EffectSize.computeEffectSize(hypervolumeHashMap);
