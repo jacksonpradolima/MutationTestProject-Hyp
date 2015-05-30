@@ -95,10 +95,12 @@ public class LowLevelHeuristic {
 
         if (parameters.containsKey("crossover")) {
             this.crossoverOperator = (Crossover) parameters.get("crossover");
+            this.crossoverOperator.setParameter("probability", (double) 1);
         }
 
         if (parameters.containsKey("mutation")) {
             this.mutationOperator = (Mutation) parameters.get("mutation");
+            this.mutationOperator.setParameter("probability", (double) 1);
         }
 
         if (parameters.containsKey("alpha")) {
@@ -143,7 +145,7 @@ public class LowLevelHeuristic {
         }
     }
 
-    public void updateRank(Solution[] parents, Solution[] offsprings, HeuristicType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
+    public void updateRank(Solution[] parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
         rank = 0;
         for (Solution parent : parents) {
             for (Solution offspring : offsprings) {
@@ -152,7 +154,7 @@ public class LowLevelHeuristic {
         }
         rank /= ((double) parents.length * (double) offsprings.length);
 
-        if (HeuristicType.MultiArmedBandit == heuristicFunction) {
+        if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
             creditAssignment(lowLevelHeuristics);
         }
     }
@@ -168,7 +170,7 @@ public class LowLevelHeuristic {
     public double getChoiceFunctionValue() {
         return (alpha * rank) + (beta * elapsedTime);
     }
-    
+
     public double getMultiArmedBanditValue() {
         double a = Math.log(SUM_N);
         double b = Math.sqrt(2.0 * a);
@@ -285,7 +287,7 @@ public class LowLevelHeuristic {
         IT = 0;
         REBOOTS++;
     }
-    
+
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /*
      Getters and setters.

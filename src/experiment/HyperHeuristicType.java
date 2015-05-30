@@ -9,7 +9,7 @@ package experiment;
  * Enum with types of Mutation Metaheuristics
  * @author Prado Lima
  */
-public enum HHType {
+public enum HyperHeuristicType {
    hhNSGAII,
    hhNSGAIII,
    hhSPEA2,

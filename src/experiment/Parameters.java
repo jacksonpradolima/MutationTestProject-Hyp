@@ -17,7 +17,7 @@ import jmetal.core.Problem;
 public class Parameters {
 
     private String instance;
-    private HHType algo;
+    private HyperHeuristicType algo;
     private int populationSize;
     private int generations;
     private String[] crossoverOperator;
@@ -43,15 +43,15 @@ public class Parameters {
         System.out.println("Algorithm: " + getAlgo());
         System.out.println("Population: " + getPopulationSize());
         System.out.println("maxEvaluations: " + getPopulationSize() * getGenerations());
-        System.out.println("crossoverOperator: " + getCrossoverOperator());
-        System.out.println("mutationOperator: " + getMutationOperator());
+        System.out.println("crossoverOperator: " + getCrossoverOperator().toString());
+        System.out.println("mutationOperator: " + getMutationOperator().toString());
         System.out.println("selectionOperator: " + getSelectionOperator());
         System.out.println("executions: " + getExecutions());
         System.out.println("----------------------------------------------------");
     }
 
-    public static synchronized String generateAlgorithmId(final HHType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator) {
-        return String.format("%s_%s_%s_%s_%s_%s_%s_%s", populationSize, generations, crossoverOperator, mutationOperator, selectionOperator, executions);
+    public static synchronized String generateAlgorithmId(final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator) {
+        return String.format("%s_%s_%s_%s_%s_%s", populationSize, generations, crossoverOperator, mutationOperator, selectionOperator, executions);
     }
 
     //</editor-fold>
@@ -74,14 +74,14 @@ public class Parameters {
     /**
      * @return the algo
      */
-    public HHType getAlgo() {
+    public HyperHeuristicType getAlgo() {
         return algo;
     }
 
     /**
      * @param algo the algo to set
      */
-    public void setAlgo(HHType algo) {
+    public void setAlgo(HyperHeuristicType algo) {
         this.algo = algo;
     }
 

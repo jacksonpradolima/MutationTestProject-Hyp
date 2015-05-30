@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Scanner;
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 
 /**
@@ -34,9 +34,9 @@ public class GenerateTimesAppliedTables {
             //                "OA_TollSystems",
             "OO_JBoss"
         };
-        HeuristicType[] heuristicFunctions = new HeuristicType[]{
-            HeuristicType.ChoiceFunction,
-            HeuristicType.MultiArmedBandit
+        HeuristicFunctionType[] heuristicFunctions = new HeuristicFunctionType[]{
+            HeuristicFunctionType.ChoiceFunction,
+            HeuristicFunctionType.MultiArmedBandit
         };
 
         String[] algorithms = new String[]{
@@ -65,7 +65,7 @@ public class GenerateTimesAppliedTables {
                         fileWriter.append("\t\t" + problem.replaceAll("O[OA]\\_", "") + " ");
                         double[] values = new double[9];
                         Arrays.fill(values, 0D);
-                        for (HeuristicType heuristicFunction : heuristicFunctions) {
+                        for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                             Scanner scanner = new Scanner(new File("experiment/" + algorithm + "/" + numberOfObjectives + "objectives/" + heuristicFunction.toString() + "/" + problem + "/LLH.txt"));
 
                             int i = 0;

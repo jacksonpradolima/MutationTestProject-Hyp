@@ -5,7 +5,7 @@ package main;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import experiment.HHType;
+import experiment.HyperHeuristicType;
 import experiment.Parameters;
 import experiment.Settings;
 import java.io.File;
@@ -95,7 +95,7 @@ public class Multithread {
             }
         } catch (Exception ex) {
             for (final String instance : Settings.INSTANCES) {
-                for (final HHType algorithm : Settings.ALGORITHMS) {
+                for (final HyperHeuristicType algorithm : Settings.ALGORITHMS) {
                     for (final int populationSize : Settings.POPULATION_SIZE) {
                         for (final int generations : Settings.GENERATIONS) {
                             for (final String selectionOperator : Settings.SELECTION_OPERATORS) {
@@ -264,7 +264,7 @@ public class Multithread {
         //instance_algorithms_populationSize_generations_crossoverOperator_mutationOperator_executions
         String[] split = context.split("_");
         final String instance = String.valueOf(split[1]);
-        final HHType algorithm = HHType.valueOf(split[2]);
+        final HyperHeuristicType algorithm = HyperHeuristicType.valueOf(split[2]);
         final int populationSize = Integer.valueOf(split[3]);
         final int generations = Integer.valueOf(split[4]);
         final String crossoverOperator = String.valueOf(split[5]);
@@ -274,9 +274,9 @@ public class Multithread {
         createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, context);
     }
 
-    private static synchronized void createThread(final String instance, final HHType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator) {
+    private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator) {
 
-        final String context = Parameters.generateAlgorithmId(algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, selectionOperator);
+        final String context = Parameters.generateAlgorithmId(algorithm, populationSize, generations, "Crossovers_" + crossoverOperator.replace(",", "_"), "Mutations_" + mutationOperator.replace(",", "_"), executions, selectionOperator);
 
         final Thread thread = new Thread(new Runnable() {
 
@@ -286,10 +286,8 @@ public class Multithread {
             public void run() {
                 try {
                     ProcessBuilder builder = new ProcessBuilder("java",
-                            "-XX:MaxPermSize=1G",
-                            "-Xmx5G",
                             "-classpath",
-                            "dist/MutationTestProject.jar",
+                            "dist/MutationTestProject-Hyp.jar",
                             getExperimentClassName(algorithm),
                             "" + instance,
                             "" + algorithm,
@@ -342,7 +340,7 @@ public class Multithread {
         addThreadToQueue(thread);
     }
 
-    private static String getExperimentClassName(final HHType algorithm) {
+    private static String getExperimentClassName(final HyperHeuristicType algorithm) {
         String experimentName = "main.MTTest45";
         if (algorithm.name().equals("NSGAIII")) {
             experimentName = "main.MTTest50";

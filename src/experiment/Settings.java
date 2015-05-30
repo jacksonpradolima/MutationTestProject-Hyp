@@ -25,8 +25,8 @@ public class Settings {
         "instances/guizzo_weatherstation.txt"
     };
 
-    public static final HHType[] ALGORITHMS = {
-        HHType.hhNSGAII
+    public static final HyperHeuristicType[] ALGORITHMS = {
+        HyperHeuristicType.hhNSGAII
     };
 
     public static final int[] POPULATION_SIZE = {
@@ -47,5 +47,5 @@ public class Settings {
         //"LinearRanking"
     };
 
-    public static final int EXECUTIONS = 30;
+    public static final int EXECUTIONS = 1;
 }

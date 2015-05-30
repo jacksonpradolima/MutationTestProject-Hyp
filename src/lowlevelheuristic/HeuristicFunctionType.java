@@ -6,10 +6,10 @@
 package lowlevelheuristic;
 
 /**
- * Low Level Heuristic's Type
+ * Low Level Heuristic Function's Type
  * @author Prado Lima
  */
-public enum HeuristicType {
+public enum HeuristicFunctionType {
     ChoiceFunction,
     MultiArmedBandit
 }

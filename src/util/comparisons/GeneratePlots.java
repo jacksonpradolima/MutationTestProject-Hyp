@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.Random;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.util.PseudoRandom;
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 
 public class GeneratePlots {
@@ -27,9 +27,9 @@ public class GeneratePlots {
             "OO_JBoss"
         };
 
-        HeuristicType[] heuristicFunctions = new HeuristicType[]{
-            HeuristicType.ChoiceFunction,
-            HeuristicType.MultiArmedBandit
+        HeuristicFunctionType[] heuristicFunctions = new HeuristicFunctionType[]{
+            HeuristicFunctionType.ChoiceFunction,
+            HeuristicFunctionType.MultiArmedBandit
         };
 
         String[] algorithms = new String[]{
@@ -57,7 +57,7 @@ public class GeneratePlots {
                         }
                         scriptWriter.append("plot");
                         for (String algorithm : algorithms) {
-                            for (HeuristicType heuristicFunction : heuristicFunctions) {
+                            for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                                 scriptWriter.append(" \"experiment/" + algorithm + "/" + numberOfObjectives + "objectives/" + heuristicFunction.toString() + "/" + problem + "/FUN.txt\"")
                                         .append(" using 1:2 title \"HITO-" + heuristicFunction.toString().replaceAll("ChoiceFunction", "CF").replaceAll("MultiArmedBandit", "MAB") + "\",");
 //                                        .append(" using 1:2 title \"" + algorithm + "-" + heuristicFunction + "\"");
@@ -95,7 +95,7 @@ public class GeneratePlots {
                             scriptWriter.append("set zlabel '" + objectives[obj] + "'\n")
                                     .append("splot");
                             for (String algorithm : algorithms) {
-                                for (HeuristicType heuristicFunction : heuristicFunctions) {
+                                for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                                     scriptWriter.append(" \"experiment/" + algorithm + "/" + numberOfObjectives + "objectives/" + heuristicFunction.toString() + "/" + problem + "/FUN.txt\"")
                                             .append(" using 1:2:" + (obj + 1) + " title \"HITO-" + heuristicFunction.toString().replaceAll("ChoiceFunction", "CF").replaceAll("MultiArmedBandit", "MAB") + "\",");
 //                                        .append(" using 1:2 title \"" + algorithm + "-" + heuristicFunction + "\"");

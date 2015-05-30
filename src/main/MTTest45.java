@@ -4,7 +4,6 @@ import algorithm.hhNSGAII;
 import experiment.Parameters;
 import java.util.HashMap;
 import java.util.Iterator;
-import jmetal.core.Algorithm;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -14,6 +13,7 @@ import jmetal.operators.mutation.MutationFactory;
 import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.NonDominatedSolutionList;
+import lowlevelheuristic.HeuristicFunctionType;
 import problem.MTProblem;
 import util.ExperimentUtil;
 
@@ -33,6 +33,9 @@ public class MTTest45 {
     public static void main(String[] args) throws JMException, ClassNotFoundException {
 
         Parameters mutationParameters = ExperimentUtil.verifyParameters(args);
+
+        double crossoverProbability = 1;
+        double mutationProbability = 1;
 
         //print parameters
         mutationParameters.PrintParameters();
@@ -60,6 +63,11 @@ public class MTTest45 {
         /* Add the operators to the algorithm*/
         algorithm.addOperator("selection", selection);
 
+        // Alterar e usar a partir do arquivo de configuração
+        algorithm.setInputParameter("heuristicFunction", HeuristicFunctionType.ChoiceFunction);
+        
+        HashMap parametersOperators;
+
         //Create low level heuristics
         int lowLevelHeuristicNumber = 1;
         String[] lowLevelHeuristicNames = new String[mutationParameters.getCrossoverOperator().length * mutationParameters.getMutationOperator().length + mutationParameters.getCrossoverOperator().length];
@@ -69,8 +77,12 @@ public class MTTest45 {
 
                 String name = "h" + lowLevelHeuristicNumber + " [" + crossoverName;
                 if (mutationName != null) {
-                    mutation = MutationFactory.getMutationOperator(mutationName, null);
-                    mutation.setParameter("probability", 1);
+                    // Mutation operator
+                    parametersOperators = new HashMap();
+                    parametersOperators.put("probability", mutationProbability);
+                    mutation = MutationFactory.getMutationOperator(mutationName, parameters);
+
+//                    mutation.setParameter("probability", mutationProbability);
                     parameters.put("mutation", mutation);
 
                     name += ", " + mutationName;
@@ -80,8 +92,10 @@ public class MTTest45 {
 
                 parameters.put("name", name);
 
-                crossover = CrossoverFactory.getCrossoverOperator(crossoverName, null);
-                crossover.setParameter("probability", 1);
+                // Crossover operator
+                parametersOperators = new HashMap();
+                parametersOperators.put("probability", crossoverProbability);
+                crossover = CrossoverFactory.getCrossoverOperator(crossoverName, parametersOperators);
                 parameters.put("crossover", crossover);
 
                 algorithm.addLowLevelHeuristic(parameters);

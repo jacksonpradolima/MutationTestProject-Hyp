@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import util.HypervolumeHandler;
@@ -51,9 +51,9 @@ public class CompareHypervolumes {
             problems = Arrays.copyOfRange(args, 5, args.length);
         }
 
-        HeuristicType[] heuristicFunctions = new HeuristicType[]{
-            HeuristicType.ChoiceFunction,
-            HeuristicType.MultiArmedBandit
+        HeuristicFunctionType[] heuristicFunctions = new HeuristicFunctionType[]{
+            HeuristicFunctionType.ChoiceFunction,
+            HeuristicFunctionType.MultiArmedBandit
         };
 
         String[] algorithms = new String[]{
@@ -69,7 +69,7 @@ public class CompareHypervolumes {
         }
     }
 
-    private static void generateTables(String[] problems, HeuristicType[] heuristicFunctions, int numberOfObjectives, String[] algorithms) throws InterruptedException, IOException {
+    private static void generateTables(String[] problems, HeuristicFunctionType[] heuristicFunctions, int numberOfObjectives, String[] algorithms) throws InterruptedException, IOException {
         String outputDirectory = outpath;
 
         try (FileWriter fileWriter = new FileWriter(outputDirectory + "TABLES_" + numberOfObjectives + ".txt")) {
@@ -113,7 +113,7 @@ public class CompareHypervolumes {
                                 + "\t\\begin{tabulary}{\\textwidth}{c");
                 for (String algorithm : algorithms) {
                     tableString.append("c");
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         tableString.append("c");
                     }
                 }
@@ -123,7 +123,7 @@ public class CompareHypervolumes {
 
                 for (String algorithm : algorithms) {
                     tableString.append(" & \\textbf{").append(algorithm).append("}");
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         tableString.append(" & \\textbf{").append(algorithm).append("-").append(heuristicFunction.toString()).append("}");
                     }
                 }
@@ -140,7 +140,7 @@ public class CompareHypervolumes {
                         //Populate HypervolueHandler
                         hypervolumeHandler.addParetoFront(mecbaDirectory + "All_FUN_" + algorithm.toLowerCase().replaceAll("-", "") + "-" + problem);
 
-                        for (HeuristicType heuristicFunction : heuristicFunctions) {
+                        for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                             String path = outpath;
                             path += algorithm + "/" + numberOfObjectives + "objectives/";
                             String hyperheuristicDirectory = path + heuristicFunction.toString() + "/" + problem + "/";
@@ -159,7 +159,7 @@ public class CompareHypervolumes {
                         mecbaHypervolumes[i] = hypervolumeHandler.calculateHypervolume(mecbaDirectory + "All_FUN_" + algorithm.toLowerCase().replaceAll("-", "") + "-" + problem, numberOfObjectives);
 
                         for (int j = 0; j < heuristicFunctions.length; j++) {
-                            HeuristicType heuristicFunction = heuristicFunctions[j];
+                            HeuristicFunctionType heuristicFunction = heuristicFunctions[j];
                             String path = outpath;
                             path += algorithm + "/" + numberOfObjectives + "objectives/";
                             String hyperheuristicDirectory = path + heuristicFunction.toString() + "/" + problem + "/";
@@ -227,7 +227,7 @@ public class CompareHypervolumes {
                         + "\t\\begin{tabulary}{\\textwidth}{c");
                 for (String algorithm : algorithms) {
                     tableString.append("c");
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         tableString.append("c");
                     }
                 }
@@ -237,7 +237,7 @@ public class CompareHypervolumes {
 
                 for (String algorithm : algorithms) {
                     tableString.append(" & \\textbf{" + algorithm + "}");
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         tableString.append(" & \\textbf{" + algorithm + "-" + heuristicFunction.toString() + "}");
                     }
                 }
@@ -254,7 +254,7 @@ public class CompareHypervolumes {
                             hypervolumeHandler.addParetoFront(mecbaDirectory + "FUN_" + algorithm.toLowerCase().replaceAll("-", "") + "-" + problem + "-" + i + ".NaoDominadas");
                         }
 
-                        for (HeuristicType heuristicFunction : heuristicFunctions) {
+                        for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                             String path = outpath;
                             path += algorithm + "/" + numberOfObjectives + "objectives/";
                             String hyperheuristicDirectory = path + heuristicFunction.toString() + "/" + problem + "/";
@@ -330,7 +330,7 @@ public class CompareHypervolumes {
                     }
                     for (int i = 0; i < hyperheuristicHypervolumes.length; i++) {
                         double[] hyperheuristicHypervolume = hyperheuristicHypervolumes[i];
-                        HeuristicType heuristicFunction = heuristicFunctions[i % heuristicFunctions.length];
+                        HeuristicFunctionType heuristicFunction = heuristicFunctions[i % heuristicFunctions.length];
                         String algorithm = algorithms[i / heuristicFunctions.length];
                         values.put(algorithm + "-" + heuristicFunction.toString(), hyperheuristicHypervolume);
                     }

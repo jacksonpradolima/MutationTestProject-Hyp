@@ -5,7 +5,7 @@
  */
 package util;
 
-import experiment.HHType;
+import experiment.HyperHeuristicType;
 import experiment.Parameters;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ExperimentUtil {
 
         //algorithm
         if (args[1] != null && !args[1].trim().equals("")) {
-            mutationParameters.setAlgo(HHType.valueOf(args[1]));
+            mutationParameters.setAlgo(HyperHeuristicType.valueOf(args[1]));
         }
 
         //populationSize
@@ -67,19 +67,19 @@ public class ExperimentUtil {
         }
 
         //crossoverOperator
-        if (args[6] != null && !args[4].trim().equals("")) {
-            mutationParameters.setCrossoverOperator(args[6].split(","));
+        if (args[4] != null && !args[4].trim().equals("")) {
+            mutationParameters.setCrossoverOperator(args[4].split(","));
         }
 
         //mutationOperator
-        if (args[7] != null && !args[5].trim().equals("")) {
-            mutationParameters.setMutationOperator(args[7].split(","));
+        if (args[5] != null && !args[5].trim().equals("")) {
+            mutationParameters.setMutationOperator(args[5].split(","));
         }
 
         //executions
-        if (args[8] != null && !args[6].trim().equals("")) {
+        if (args[6] != null && !args[6].trim().equals("")) {
             try {
-                mutationParameters.setExecutions(Integer.valueOf(args[8]));
+                mutationParameters.setExecutions(Integer.valueOf(args[6]));
             } catch (NumberFormatException ex) {
                 System.out.println("Executions argument not double.");
                 System.exit(1);
@@ -87,13 +87,13 @@ public class ExperimentUtil {
         }
 
         //context
-        if (args[9] != null && !args[7].trim().equals("")) {
-            mutationParameters.setContext(args[9]);
+        if (args[7] != null && !args[7].trim().equals("")) {
+            mutationParameters.setContext(args[7]);
         }
 
         //selection operator
-        if (args[11] != null && !args[8].trim().equals("")) {
-            mutationParameters.setSelectionOperator(args[11]);
+        if (args[8] != null && !args[8].trim().equals("")) {
+            mutationParameters.setSelectionOperator(args[8]);
         }
         
         return mutationParameters;

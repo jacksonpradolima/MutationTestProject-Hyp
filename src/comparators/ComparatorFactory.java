@@ -5,7 +5,7 @@
  */
 package comparators;
 
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 import java.util.Comparator;
 import lowlevelheuristic.LowLevelHeuristic;
 
@@ -15,7 +15,7 @@ import lowlevelheuristic.LowLevelHeuristic;
  */
 public class ComparatorFactory {
 
-    public static Comparator<LowLevelHeuristic> createComparator(HeuristicType name) {
+    public static Comparator<LowLevelHeuristic> createComparator(HeuristicFunctionType name) {
         switch (name) {
             case ChoiceFunction:
                 return new ChoiceFunctionComparator();

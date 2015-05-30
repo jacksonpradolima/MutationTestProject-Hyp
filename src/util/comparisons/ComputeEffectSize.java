@@ -12,7 +12,7 @@ import java.util.HashMap;
 import jmetal.extend.Coverage;
 import jmetal.qualityIndicator.util.MetricsUtil;
 import jmetal.extend.NonDominatedSolutionList;
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 import statistics.EffectSize;
 import util.HypervolumeHandler;
@@ -39,9 +39,9 @@ public class ComputeEffectSize {
             "OO_JBoss"
         };
 
-        HeuristicType[] heuristicFunctions = new HeuristicType[]{
-            HeuristicType.ChoiceFunction,
-            HeuristicType.MultiArmedBandit
+        HeuristicFunctionType[] heuristicFunctions = new HeuristicFunctionType[]{
+            HeuristicFunctionType.ChoiceFunction,
+            HeuristicFunctionType.MultiArmedBandit
         };
 
         MetricsUtil metricsUtil = new MetricsUtil();
@@ -92,7 +92,7 @@ public class ComputeEffectSize {
                 hypervolumeLatexTableBuilder.append("\t\t\\toprule\n");
                 hypervolumeLatexTableBuilder.append("\t\t\\textbf{System}");
 
-                for (HeuristicType heuristicFunction : heuristicFunctions) {
+                for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                     hypervolumeLatexTableBuilder.append(" & \\textbf{MOEA/").append(heuristicFunction.toString()).append("}");
                 }
 
@@ -121,7 +121,7 @@ public class ComputeEffectSize {
                         truePareto.addAll(metricsUtil.readNonDominatedSolutionSet(mecbaDirectory + "FUN_nsgaii-" + problem + "-" + i + ".NaoDominadas"));
                     }
 
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         String path = "experiment/";
                         path += objectives + "objectives/";
                         String hyperheuristicDirectory = path + heuristicFunction.toString() + "/" + problem + "/";
@@ -144,7 +144,7 @@ public class ComputeEffectSize {
                     hypervolumeHashMap.put("MOEA", mecbaHypervolumes);
                     coverageHashMap.put("MOEA", mecbaCoverages);
 
-                    for (HeuristicType heuristicFunction : heuristicFunctions) {
+                    for (HeuristicFunctionType heuristicFunction : heuristicFunctions) {
                         String heuristicFunctionS = heuristicFunction.toString();
                         String path = "experiment/";
                         path += objectives + "objectives/";

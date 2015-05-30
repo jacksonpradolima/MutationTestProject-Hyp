@@ -32,7 +32,7 @@ import jmetal.util.PseudoRandom;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
 import lowlevelheuristic.LowLevelHeuristic;
-import lowlevelheuristic.HeuristicType;
+import lowlevelheuristic.HeuristicFunctionType;
 
 /**
  *
@@ -85,7 +85,7 @@ public class hhNSGAII extends Algorithm {
         indicators = (QualityIndicator) getInputParameter("indicators");
 
         // Get type of heuristic function
-        HeuristicType heuristicFunction = HeuristicType.valueOf((String) getInputParameter("heuristicFunction"));
+        HeuristicFunctionType heuristicFunction = (HeuristicFunctionType) getInputParameter("heuristicFunction");
 
         // Define the heuristic function
         Comparator<LowLevelHeuristic> heuristicFunctionComparator = ComparatorFactory.createComparator(heuristicFunction);
@@ -109,6 +109,7 @@ public class hhNSGAII extends Algorithm {
             population.add(newSolution);
         } //for       
 
+        // I don't know where to use
         int generation = 0;
 
         // Generations 
