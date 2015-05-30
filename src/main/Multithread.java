@@ -98,12 +98,8 @@ public class Multithread {
                 for (final HHType algorithm : Settings.ALGORITHMS) {
                     for (final int populationSize : Settings.POPULATION_SIZE) {
                         for (final int generations : Settings.GENERATIONS) {
-                            for (final String crossoverOperator : Settings.CROSSOVER_OPERATORS) {
-                                for (final String mutationOperator : Settings.MUTATION_OPERATORS) {
-                                    for (final String selectionOperator : Settings.SELECTION_OPERATORS) {
-                                        createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, Settings.EXECUTIONS, selectionOperator);
-                                    }
-                                }
+                            for (final String selectionOperator : Settings.SELECTION_OPERATORS) {
+                                createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator);
                             }
                         }
                     }

@@ -37,16 +37,9 @@ public class Settings {
         300
     };
 
-    public static final String[] CROSSOVER_OPERATORS = {
-        "SinglePointCrossover",
-        "UniformCrossoverBinary",
-        "TwoPointsCrossoverBinary"
-    };
-
-    public static final String[] MUTATION_OPERATORS = {
-        "BitFlipMutation",
-        "SwapMutationBinary"
-    };
+    public static final String CROSSOVER_OPERATORS = String.format("%s,%s,%s", "SinglePointCrossover", "UniformCrossoverBinary", "TwoPointsCrossoverBinary");
+            
+    public static final String MUTATION_OPERATORS = String.format("%s,%s", "BitFlipMutation", "SwapMutationBinary");
 
     public static final String[] SELECTION_OPERATORS = {
         "BinaryTournament2", 

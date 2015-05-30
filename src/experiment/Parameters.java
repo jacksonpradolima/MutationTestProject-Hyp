@@ -20,8 +20,8 @@ public class Parameters {
     private HHType algo;
     private int populationSize;
     private int generations;
-    private String crossoverOperator;
-    private String mutationOperator;
+    private String[] crossoverOperator;
+    private String[] mutationOperator;
     private String selectionOperator;
     private int executions;
     private String context;
@@ -116,28 +116,28 @@ public class Parameters {
     /**
      * @return the crossoverOperator
      */
-    public String getCrossoverOperator() {
+    public String[] getCrossoverOperator() {
         return crossoverOperator;
     }
 
     /**
      * @param crossoverOperator the crossoverOperator to set
      */
-    public void setCrossoverOperator(String crossoverOperator) {
+    public void setCrossoverOperator(String[] crossoverOperator) {
         this.crossoverOperator = crossoverOperator;
     }
 
     /**
      * @return the mutationOperator
      */
-    public String getMutationOperator() {
+    public String[] getMutationOperator() {
         return mutationOperator;
     }
 
     /**
      * @param mutationOperator the mutationOperator to set
      */
-    public void setMutationOperator(String mutationOperator) {
+    public void setMutationOperator(String[] mutationOperator) {
         this.mutationOperator = mutationOperator;
     }
 

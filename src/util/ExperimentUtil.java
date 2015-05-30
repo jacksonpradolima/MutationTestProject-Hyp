@@ -68,12 +68,12 @@ public class ExperimentUtil {
 
         //crossoverOperator
         if (args[6] != null && !args[4].trim().equals("")) {
-            mutationParameters.setCrossoverOperator(args[6]);
+            mutationParameters.setCrossoverOperator(args[6].split(","));
         }
 
         //mutationOperator
         if (args[7] != null && !args[5].trim().equals("")) {
-            mutationParameters.setMutationOperator(args[7]);
+            mutationParameters.setMutationOperator(args[7].split(","));
         }
 
         //executions

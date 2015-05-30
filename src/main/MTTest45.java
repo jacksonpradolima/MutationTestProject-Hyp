@@ -1,5 +1,6 @@
 package main;
 
+import algorithm.hhNSGAII;
 import experiment.Parameters;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,7 +27,6 @@ import util.ExperimentUtil;
  *
  * @author thiagodnf
  */
-
 //experimental class for jmetal 4.5
 public class MTTest45 {
 
@@ -36,47 +36,59 @@ public class MTTest45 {
 
         //print parameters
         mutationParameters.PrintParameters();
-        
+
         //select problem
         Problem problem = new MTProblem(mutationParameters.getInstance());
 
         Operator crossover;         // Crossover operator
         Operator mutation;         // Mutation operator
         Operator selection;         // Selection operator
-        
-        HashMap parameters; // Operator parameters
-
-        // Crossover operator
-        parameters = new HashMap();
-        parameters.put("probability", 1);
-        //parameters.put("distributionIndex", 30.0);
-        crossover = CrossoverFactory.getCrossoverOperator(mutationParameters.getCrossoverOperator(), parameters);
-
-        // Mutation operator
-        parameters = new HashMap();
-        parameters.put("probability", 1);
-        //parameters.put("distributionIndex", 20.0);
-        mutation = MutationFactory.getMutationOperator(mutationParameters.getMutationOperator(), parameters);
 
         // Selection Operator 
-        parameters = null;
-        selection = SelectionFactory.getSelectionOperator(mutationParameters.getSelectionOperator(), parameters);
+        selection = SelectionFactory.getSelectionOperator(mutationParameters.getSelectionOperator(), null);
 
         //select algorithm
-        Algorithm algorithm = mutationParameters.getAlgorithmInstance(problem);
+        hhNSGAII algorithm = new hhNSGAII(problem);
 
         // Algorithm params
         algorithm.setInputParameter("populationSize", mutationParameters.getPopulationSize());
         algorithm.setInputParameter("maxEvaluations", mutationParameters.getPopulationSize() * mutationParameters.getGenerations());
-                
+
         //Parameter for SPEA and IBEA
         algorithm.setInputParameter("archiveSize", mutationParameters.getPopulationSize());
 
-
         /* Add the operators to the algorithm*/
-        algorithm.addOperator("crossover", crossover);
-        algorithm.addOperator("mutation", mutation);
         algorithm.addOperator("selection", selection);
+
+        //Create low level heuristics
+        int lowLevelHeuristicNumber = 1;
+        String[] lowLevelHeuristicNames = new String[mutationParameters.getCrossoverOperator().length * mutationParameters.getMutationOperator().length + mutationParameters.getCrossoverOperator().length];
+        for (String crossoverName : mutationParameters.getCrossoverOperator()) {
+            for (String mutationName : mutationParameters.getMutationOperator()) {
+                HashMap<String, Object> parameters = new HashMap<>();
+
+                String name = "h" + lowLevelHeuristicNumber + " [" + crossoverName;
+                if (mutationName != null) {
+                    mutation = MutationFactory.getMutationOperator(mutationName, null);
+                    mutation.setParameter("probability", 1);
+                    parameters.put("mutation", mutation);
+
+                    name += ", " + mutationName;
+                }
+                name += "]";
+                lowLevelHeuristicNames[lowLevelHeuristicNumber - 1] = name;
+
+                parameters.put("name", name);
+
+                crossover = CrossoverFactory.getCrossoverOperator(crossoverName, null);
+                crossover.setParameter("probability", 1);
+                parameters.put("crossover", crossover);
+
+                algorithm.addLowLevelHeuristic(parameters);
+
+                lowLevelHeuristicNumber++;
+            }
+        }
 
         NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
         String path = "";

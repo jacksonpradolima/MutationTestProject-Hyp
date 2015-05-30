@@ -18,16 +18,21 @@
 package algorithm;
 
 import comparators.ComparatorFactory;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import jmetal.core.*;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Distance;
 import jmetal.util.JMException;
+import jmetal.util.PseudoRandom;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
 import lowlevelheuristic.LowLevelHeuristic;
 import lowlevelheuristic.HeuristicType;
-import lowlevelheuristic.LowLevelHeuristicUtils;
 
 /**
  *
@@ -36,12 +41,18 @@ import lowlevelheuristic.LowLevelHeuristicUtils;
 public class hhNSGAII extends Algorithm {
 
     /**
+     * All low level heuristics
+     */
+    private final List<LowLevelHeuristic> lowLevelHeuristics;
+
+    /**
      * Constructor
      *
      * @param problem Problem to solve
      */
     public hhNSGAII(Problem problem) {
         super(problem);
+        this.lowLevelHeuristics = new ArrayList<>();
     } // NSGAII
 
     /**
@@ -55,7 +66,7 @@ public class hhNSGAII extends Algorithm {
         int populationSize;
         int maxEvaluations;
         int evaluations;
-        
+
         QualityIndicator indicators; // QualityIndicator object
         int requiredEvaluations; // Use in the example of use of the
         // indicators object (see below)
@@ -69,17 +80,15 @@ public class hhNSGAII extends Algorithm {
         Distance distance = new Distance();
 
         //Read the parameters
-        populationSize = ((Integer) getInputParameter("populationSize")).intValue();
-        maxEvaluations = ((Integer) getInputParameter("maxEvaluations")).intValue();
+        populationSize = (Integer) getInputParameter("populationSize");
+        maxEvaluations = (Integer) getInputParameter("maxEvaluations");
         indicators = (QualityIndicator) getInputParameter("indicators");
 
         // Get type of heuristic function
         HeuristicType heuristicFunction = HeuristicType.valueOf((String) getInputParameter("heuristicFunction"));
-       
+
         // Define the heuristic function
         Comparator<LowLevelHeuristic> heuristicFunctionComparator = ComparatorFactory.createComparator(heuristicFunction);
-        
-        LowLevelHeuristicUtils lowLevelHeuristicUtils = new LowLevelHeuristicUtils();
 
         //Initialize the variables
         population = new SolutionSet(populationSize);
@@ -112,7 +121,7 @@ public class hhNSGAII extends Algorithm {
             Solution[] parents = new Solution[2];
             for (int i = 0; i < (populationSize / 2); i++) {
                 //Get the best hyperheuristics
-                LowLevelHeuristic applyingHeuristic = lowLevelHeuristicUtils.getApplyingHeuristic(heuristicFunctionComparator);
+                LowLevelHeuristic applyingHeuristic = getApplyingHeuristic(heuristicFunctionComparator);
 
                 //obtain parents
                 parents[0] = (Solution) selectionOperator.execute(population);
@@ -131,10 +140,10 @@ public class hhNSGAII extends Algorithm {
                 evaluations += 2;
 
                 //Update rank
-                applyingHeuristic.updateRank(parents, offSpring, heuristicFunction, lowLevelHeuristicUtils.getLowLevelHeuristics());
+                applyingHeuristic.updateRank(parents, offSpring, heuristicFunction, getLowLevelHeuristics());
 
                 //Update time elapsed from heuristics not executed
-                applyingHeuristic.updateElapseTime(lowLevelHeuristicUtils.getLowLevelHeuristics(), applyingHeuristic);
+                applyingHeuristic.updateElapseTime(getLowLevelHeuristics(), applyingHeuristic);
             } // for
 
             // Create the solutionSet union of solutionSet and offSpring
@@ -180,7 +189,7 @@ public class hhNSGAII extends Algorithm {
                 remain = 0;
             } // if                               
 
-      // This piece of code shows how to use the indicator object into the code
+            // This piece of code shows how to use the indicator object into the code
             // of NSGA-II. In particular, it finds the number of evaluations required
             // by the algorithm to obtain a Pareto front with a hypervolume higher
             // than the hypervolume of the true Pareto front.
@@ -202,4 +211,68 @@ public class hhNSGAII extends Algorithm {
 
         return ranking.getSubfront(0);
     } // execute
+
+    //<editor-fold defaultstate="collapsed" desc="Methods - Low Level Heuristics">
+    public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
+        LowLevelHeuristic lowLevelHeuristic = new LowLevelHeuristic(parameters);
+        if (!lowLevelHeuristics.contains(lowLevelHeuristic)) {
+            lowLevelHeuristics.add(lowLevelHeuristic);
+            return lowLevelHeuristic;
+        } else {
+            return null;
+        }
+    }
+
+    public void clearLowLeverHeuristicsValues() {
+        LowLevelHeuristic.clearAllStaticValues();
+        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
+            lowLevelHeuristic.clearAllValues();
+        }
+    }
+
+    public List<LowLevelHeuristic> getLowLevelHeuristics() {
+        return this.lowLevelHeuristics;
+    }
+
+    public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
+        int[] allTimesApplied = new int[lowLevelHeuristics.size()];
+        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
+            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
+            allTimesApplied[i] = lowLevelHeuristic.getNumberOfTimesApplied();
+        }
+        return allTimesApplied;
+    }
+
+    public int getLowLevelHeuristicsSize() {
+        return lowLevelHeuristics.size();
+    }
+
+    public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
+        List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
+        Collections.sort(allLowLevelHeuristics, comparator);
+        List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
+
+        //Find the best tied heuristics
+        Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
+        LowLevelHeuristic heuristic;
+        LowLevelHeuristic nextHeuristic = iterator.next();
+        do {
+            heuristic = nextHeuristic;
+            applyingHeuristics.add(heuristic);
+        } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
+
+        return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
+    }
+
+    public LowLevelHeuristic removeLowLevelHeuristic(String name) {
+        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
+            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
+            if (lowLevelHeuristic.getName().equals(name)) {
+                return lowLevelHeuristics.remove(i);
+            }
+        }
+        return null;
+    }
+
+    //</editor-fold>
 } // NSGA-II
