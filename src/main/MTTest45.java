@@ -80,7 +80,7 @@ public class MTTest45 {
                     // Mutation operator
                     parametersOperators = new HashMap();
                     parametersOperators.put("probability", mutationProbability);
-                    mutation = MutationFactory.getMutationOperator(mutationName, parameters);
+                    mutation = MutationFactory.getMutationOperator(mutationName, parametersOperators);
 
 //                    mutation.setParameter("probability", mutationProbability);
                     parameters.put("mutation", mutation);
