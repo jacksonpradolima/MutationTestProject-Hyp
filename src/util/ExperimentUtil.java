@@ -5,12 +5,16 @@
  */
 package util;
 
+import algorithm.hhNSGAII;
 import experiment.HyperHeuristicType;
 import experiment.Parameters;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import jmetal.util.JMException;
 import jmetal.util.NonDominatedSolutionList;
+import lowlevelheuristic.LowLevelHeuristic;
 import operators.crossover.UniformCrossoverBinary4NSGAIII;
 import operators.mutation.SwapMutationBinary4NSGAIII;
 import operators.selection.BinaryTournament24NSGAIII;
@@ -73,7 +77,7 @@ public class ExperimentUtil {
 
         //mutationOperator
         if (args[5] != null && !args[5].trim().equals("")) {
-            mutationParameters.setMutationOperator(args[5].split(","));
+            mutationParameters.setMutationOperator(("null," + args[5]).split(","));
         }
 
         //executions
@@ -227,6 +231,29 @@ public class ExperimentUtil {
             return new BinaryTournament24NSGAIII();
         }
         return null;
+    }
+
+    public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, hhNSGAII algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
+        fileWriter.write("Run: " + i + "\n");
+        List<LowLevelHeuristic> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
+        for (int j = 0; j < lowLevelHeuristics.size(); j++) {
+            if (i == 0) {
+                numberOfTimesAppliedAllRuns.add(lowLevelHeuristics.get(j).getNumberOfTimesApplied());
+            } else {
+                int numberOfTimesApplied = lowLevelHeuristics.get(j).getNumberOfTimesApplied();
+                numberOfTimesAppliedAllRuns.set(j, numberOfTimesAppliedAllRuns.get(j) + numberOfTimesApplied);
+            }
+            fileWriter.write("Low Level Heuristic " + lowLevelHeuristics.get(j).getName() + " applied " + lowLevelHeuristics.get(j).getNumberOfTimesApplied() + " times\n");
+        }
+        algorithm.clearLowLeverHeuristicsValues();
+    }
+
+    public static void printAllHeuristicsInformation(FileWriter fileWriter, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
+        fileWriter.write("-------------------------------------------------------\n");
+        fileWriter.write("All Runs\n");
+        for (int i = 0; i < numberOfTimesAppliedAllRuns.size(); i++) {
+            fileWriter.write("Low Level Heuristic h" + (i + 1) + " applied " + numberOfTimesAppliedAllRuns.get(i) + " times\n");
+        }
     }
 
 }

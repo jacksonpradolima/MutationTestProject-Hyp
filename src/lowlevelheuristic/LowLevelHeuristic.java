@@ -29,7 +29,7 @@ public class LowLevelHeuristic {
     /**
      * Elapsed time weight.
      */
-    private double beta = 1;
+    private double beta = 0.00005;
 
     /**
      * Sliding window size.
@@ -100,7 +100,9 @@ public class LowLevelHeuristic {
 
         if (parameters.containsKey("mutation")) {
             this.mutationOperator = (Mutation) parameters.get("mutation");
-            this.mutationOperator.setParameter("probability", (double) 1);
+            if (this.mutationOperator != null) {
+                this.mutationOperator.setParameter("probability", (double) 1);
+            }
         }
 
         if (parameters.containsKey("alpha")) {
@@ -322,6 +324,11 @@ public class LowLevelHeuristic {
 
     public int getNumberOfTimesApplied() {
         return numberOfTimesApplied;
+    }
+
+    //used in the final results
+    public void setNumberOfTimesApplied(int numberOfTimesApplied) {
+        this.numberOfTimesApplied += numberOfTimesApplied;
     }
 
     public Crossover getCrossoverOperator() {

@@ -2,8 +2,12 @@ package main;
 
 import algorithm.hhNSGAII;
 import experiment.Parameters;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import jmetal.core.Operator;
 import jmetal.core.Problem;
 import jmetal.core.Solution;
@@ -14,6 +18,7 @@ import jmetal.operators.selection.SelectionFactory;
 import jmetal.util.JMException;
 import jmetal.util.NonDominatedSolutionList;
 import lowlevelheuristic.HeuristicFunctionType;
+import lowlevelheuristic.LowLevelHeuristic;
 import problem.MTProblem;
 import util.ExperimentUtil;
 
@@ -30,7 +35,7 @@ import util.ExperimentUtil;
 //experimental class for jmetal 4.5
 public class MTTest45 {
 
-    public static void main(String[] args) throws JMException, ClassNotFoundException {
+    public static void main(String[] args) throws JMException, ClassNotFoundException, IOException {
 
         Parameters mutationParameters = ExperimentUtil.verifyParameters(args);
 
@@ -65,7 +70,7 @@ public class MTTest45 {
 
         // Alterar e usar a partir do arquivo de configuração
         algorithm.setInputParameter("heuristicFunction", HeuristicFunctionType.ChoiceFunction);
-        
+
         HashMap parametersOperators;
 
         //Create low level heuristics
@@ -105,7 +110,9 @@ public class MTTest45 {
         }
 
         NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
-        String path = "";
+        String path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
+        FileWriter fileWriter = new FileWriter(path + "/HHResults");
 
         /* Execute the Algorithm */
         for (int i = 0; i < mutationParameters.getExecutions(); i++) {
@@ -116,7 +123,6 @@ public class MTTest45 {
             long estimatedTime = System.currentTimeMillis() - initTime;
             System.out.println("Total time of execution: " + estimatedTime);
             /* Log messages */
-            path = String.format("experiment/%s/%s/%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getContext());
             String pathFun = String.format("%s/FUN_%s", path, i);
             String pathVar = String.format("%s/VAR_%s", path, i);
 
@@ -132,8 +138,14 @@ public class MTTest45 {
 
             System.out.println("Variables values have been writen to file " + pathVar);
             actualNonDominatedSolutions.printVariablesToFile(pathVar);
+
+            ExperimentUtil.printSingleHeuristicInformation(fileWriter, i, algorithm, numberOfTimesAppliedAllRuns);
         }
+
+        ExperimentUtil.printAllHeuristicsInformation(fileWriter, numberOfTimesAppliedAllRuns);
+        fileWriter.close();
 
         ExperimentUtil.printFinalSolutions(nonDominatedSolutions, mutationParameters);
     }
+
 }
