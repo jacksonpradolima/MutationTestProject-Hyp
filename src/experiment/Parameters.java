@@ -43,8 +43,15 @@ public class Parameters {
         System.out.println("Algorithm: " + getAlgo());
         System.out.println("Population: " + getPopulationSize());
         System.out.println("maxEvaluations: " + getPopulationSize() * getGenerations());
-        System.out.println("crossoverOperator: " + getCrossoverOperator().toString());
-        System.out.println("mutationOperator: " + getMutationOperator().toString());
+        
+        for (String crossoverOperator1 : crossoverOperator) {
+            System.out.println("crossoverOperator: " + crossoverOperator1);
+        }
+
+        for (String mutationOperator1 : mutationOperator) {
+            System.out.println("mutationOperator: " + mutationOperator1);
+        }
+        
         System.out.println("selectionOperator: " + getSelectionOperator());
         System.out.println("executions: " + getExecutions());
         System.out.println("----------------------------------------------------");
@@ -55,7 +62,6 @@ public class Parameters {
     }
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /**
      * @return the instance

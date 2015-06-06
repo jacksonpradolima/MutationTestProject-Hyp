@@ -300,7 +300,7 @@ public class Multithread {
                             "" + selectionOperator
                     );
 
-                    String pathFile = String.format("experiment/%s/%s/%s", getInstanceName(instance), algorithm, context);
+                    String pathFile = String.format("experiment/%s/%s/%s-%s", getInstanceName(instance), algorithm, populationSize, generations);
 
                     final File destination = new File(String.format("%s/SYSTEM_OUTPUT.txt", pathFile));
                     final File errorDestination = new File(String.format("%s/SYSTEM_ERROR.txt", pathFile));

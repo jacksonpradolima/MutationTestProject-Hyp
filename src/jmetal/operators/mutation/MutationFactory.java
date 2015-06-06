@@ -52,10 +52,7 @@ public class MutationFactory {
       return new SwapMutationBinary(parameters);
     else
     {
-      Configuration.logger_.severe("Operator '" + name + "' not found ");
-      Class cls = java.lang.String.class;
-      String name2 = cls.getName() ;    
-      throw new JMException("Exception in " + name2 + ".getMutationOperator()") ;
+      return null;
     }        
   } // getMutationOperator
 } // MutationFactory

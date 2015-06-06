@@ -14,15 +14,15 @@ public class Settings {
 
     public static final String[] INSTANCES = {
         //"instances/bisect.txt",
-        "instances/bub.txt",
-        "instances/find.txt",
-        "instances/fourballs.txt",
-        "instances/mid.txt",
-        "instances/trityp.txt",
+        //"instances/bub.txt",
+        //"instances/find.txt",
+        //"instances/fourballs.txt",
+        //"instances/mid.txt",
+        //"instances/trityp.txt",
         "instances/guizzo_cas.txt",
-        "instances/guizzo_james.txt",
-        "instances/guizzo_save.txt",
-        "instances/guizzo_weatherstation.txt"
+        //"instances/guizzo_james.txt",
+        //"instances/guizzo_save.txt",
+        //"instances/guizzo_weatherstation.txt"
     };
 
     public static final HyperHeuristicType[] ALGORITHMS = {
@@ -47,5 +47,5 @@ public class Settings {
         //"LinearRanking"
     };
 
-    public static final int EXECUTIONS = 1;
+    public static final int EXECUTIONS = 5;
 }
