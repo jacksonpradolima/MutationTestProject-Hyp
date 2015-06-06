@@ -25,7 +25,7 @@ import util.ExperimentUtil;
 /**
  * Main class
  *
- * @author thiagodnf
+ * @author Prado Lima
  */
 //experimental class for jmetal 4.5
 public class MTTest45 {
