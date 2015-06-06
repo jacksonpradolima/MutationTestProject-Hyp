@@ -133,7 +133,9 @@ public class UniformCrossoverBinary extends Crossover {
                     + parents[1].getType() + " are obtained");
         }
 
-        crossoverProbability = (Double) getParameter("probability");
+        if (parameters_.get("probability") != null) {
+            crossoverProbability_ = (Double) parameters_.get("probability");
+        }
 
         if (parents.length < 2) {
             Configuration.logger_.severe("UniformCrossoverBinary.execute: operator needs two "

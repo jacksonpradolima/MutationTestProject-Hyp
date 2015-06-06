@@ -35,6 +35,7 @@ public class LowLevelHeuristic {
      * Sliding window size.
      */
     private static int W = 0;
+    
     private static double c = 0;
 
     /**
