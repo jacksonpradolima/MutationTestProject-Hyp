@@ -2,19 +2,19 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2015-06-06T00:47:15</date>
-  <millis>1433562435741</millis>
+  <date>2015-06-07T20:03:22</date>
+  <millis>1433718202260</millis>
   <sequence>0</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
   <class>algorithm.hhibea.IBEA_main</class>
   <method>main</method>
   <thread>1</thread>
-  <message>Total execution time: 36943ms</message>
+  <message>Total execution time: 39816ms</message>
 </record>
 <record>
-  <date>2015-06-06T00:47:15</date>
-  <millis>1433562435786</millis>
+  <date>2015-06-07T20:03:22</date>
+  <millis>1433718202297</millis>
   <sequence>1</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
@@ -24,8 +24,8 @@
   <message>Variables values have been writen to file VAR</message>
 </record>
 <record>
-  <date>2015-06-06T00:47:15</date>
-  <millis>1433562435798</millis>
+  <date>2015-06-07T20:03:22</date>
+  <millis>1433718202321</millis>
   <sequence>2</sequence>
   <logger>jMetal</logger>
   <level>INFO</level>
