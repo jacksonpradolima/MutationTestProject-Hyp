@@ -6,7 +6,7 @@
 package util.comparisons;
 
 import algorithm.hhNSGAII;
-import hyperheuristics.statistics.KruskalWallisTest;
+import statistics.KruskalWallisTest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

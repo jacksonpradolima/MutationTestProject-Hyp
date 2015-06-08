@@ -5,7 +5,7 @@
  */
 package util;
 
-import hyperheuristics.statistics.KruskalWallisTest;
+import statistics.KruskalWallisTest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

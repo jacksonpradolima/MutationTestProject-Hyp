@@ -9,17 +9,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import jmetal.core.Solution;
-import jmetal.operators.crossover.Crossover;
-import jmetal.operators.mutation.Mutation;
+
 import jmetal.util.JMException;
-import jmetal.util.comparators.DominanceComparator;
+
+import org.uma.jmetal.operator.CrossoverOperator;
+import org.uma.jmetal.operator.MutationOperator;
+import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.util.comparator.DominanceComparator;
 
 /**
  *
  * @author Prado Lima
  */
-public class LowLevelHeuristic {
+public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
 
     /**
      * Rank weight.
@@ -41,7 +43,7 @@ public class LowLevelHeuristic {
     /**
      * Sliding window.
      */
-    private static LowLevelHeuristic SLIDING_WINDOW_HEURISTIC[];
+    private static LowLevelHeuristicJM5 SLIDING_WINDOW_HEURISTIC[];
 
     /**
      * Sliding window improvement.
@@ -77,10 +79,11 @@ public class LowLevelHeuristic {
     private double n;
 
     //Aggregation
-    private Crossover crossoverOperator;
-    private Mutation mutationOperator;
+    private CrossoverOperator crossoverOperator;
+    private MutationOperator mutationOperator;
 
-    public LowLevelHeuristic(HashMap<String, Object> parameters) {
+    public LowLevelHeuristicJM5(HashMap<String, Object> parameters) {
+    	super(new HashMap());
         this.dominanceComparator = new DominanceComparator();
 
         this.rank = 0.5;
@@ -95,14 +98,14 @@ public class LowLevelHeuristic {
         }
 
         if (parameters.containsKey("crossover")) {
-            this.crossoverOperator = (Crossover) parameters.get("crossover");
-            this.crossoverOperator.setParameter("probability", (double) 1);
+            this.crossoverOperator = (CrossoverOperator) parameters.get("crossover");
+           // this.crossoverOperator.setParameter("probability", (double) 1);
         }
 
         if (parameters.containsKey("mutation")) {
-            this.mutationOperator = (Mutation) parameters.get("mutation");
+            this.mutationOperator = (MutationOperator) parameters.get("mutation");
             if (this.mutationOperator != null) {
-                this.mutationOperator.setParameter("probability", (double) 1);
+             //   this.mutationOperator.setParameter("probability", (double) 1);
             }
         }
 
@@ -117,7 +120,7 @@ public class LowLevelHeuristic {
         if (parameters.containsKey("w")) {
             W = (int) parameters.get("w");
             if (SLIDING_WINDOW_HEURISTIC == null) {
-                SLIDING_WINDOW_HEURISTIC = new LowLevelHeuristic[W];
+                SLIDING_WINDOW_HEURISTIC = new LowLevelHeuristicJM5[W];
                 SLIDING_WINDOW_IMPROVEMENT = new double[W];
             }
         }
@@ -148,22 +151,22 @@ public class LowLevelHeuristic {
         }
     }
 
-    public void updateRank(Solution[] parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
+    public void updateRank(List<Solution> parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
         rank = 0;
         for (Solution parent : parents) {
             for (Solution offspring : offsprings) {
                 rank += ((double) dominanceComparator.compare(parent, offspring) + (double) 1) / (double) 2;
             }
         }
-        rank /= ((double) parents.length * (double) offsprings.length);
+        rank /= ((double) parents.size() * (double) offsprings.length);
 
         if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
             creditAssignment(lowLevelHeuristics);
         }
     }
 
-    public void updateElapseTime(List<LowLevelHeuristic> lowLevelHeuristics, LowLevelHeuristic applyingHeuristic) {
-        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
+    public void updateElapseTime(List<LowLevelHeuristicJM5> lowLevelHeuristics, LowLevelHeuristicJM5 applyingHeuristic) {
+        for (LowLevelHeuristicJM5 lowLevelHeuristic : lowLevelHeuristics) {
             if (!lowLevelHeuristic.equals(applyingHeuristic)) {
                 lowLevelHeuristic.notExecuted();
             }
@@ -213,6 +216,25 @@ public class LowLevelHeuristic {
 
         return offSpring;
     }
+    
+    public Object executeJM5(Object parents) throws JMException {
+      
+        List<Solution> offspring = (List<Solution>) crossoverOperator.execute(parents);
+        
+        if (mutationOperator != null) {
+            for (Solution offSpringSolution : offspring) {
+                mutationOperator.execute(offSpringSolution);
+            }
+        }
+
+        executed();
+        
+        Solution[] s = new Solution[2];
+        s[0] = offspring.get(0);
+        s[1] = offspring.get(1);
+
+        return s;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -222,14 +244,14 @@ public class LowLevelHeuristic {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final LowLevelHeuristic other = (LowLevelHeuristic) obj;
+        final LowLevelHeuristicJM5 other = (LowLevelHeuristicJM5) obj;
         return Objects.equals(this.name, other.name);
     }
 
     private void updateReward() {
         double max = .0;
         int j = 0;
-        LowLevelHeuristic h = SLIDING_WINDOW_HEURISTIC[j];
+        LowLevelHeuristicJM5 h = SLIDING_WINDOW_HEURISTIC[j];
         double im = SLIDING_WINDOW_IMPROVEMENT[j];
         for (; j < W && h != null; j++) {
             if (h.equals(this) && im > max) {
@@ -253,27 +275,6 @@ public class LowLevelHeuristic {
         n = n * ((w / (w + e)) + (1.0 / (n + 1.0)));
     }
 
-    protected void creditAssignment(List<LowLevelHeuristic> heuristics) {
-        if (W != 0) {
-            LowLevelHeuristic temp = SLIDING_WINDOW_HEURISTIC[I];
-            SLIDING_WINDOW_HEURISTIC[I] = this;
-            SLIDING_WINDOW_IMPROVEMENT[I] = this.rank;
-            if (temp != null) {
-                temp.updateReward();
-            }
-            this.updateReward();
-            I++;
-            I %= W;
-
-            SUM_N = 0;
-            for (LowLevelHeuristic heuristic : heuristics) {
-                heuristic.updateQ();
-                heuristic.updateN();
-                SUM_N += heuristic.n;
-            }
-        }
-    }
-
     private void reinitialize() {
         this.rank = 1;
         this.elapsedTime = 0;
@@ -284,7 +285,7 @@ public class LowLevelHeuristic {
     }
 
     private static void reinitializeStatic() {
-        SLIDING_WINDOW_HEURISTIC = new LowLevelHeuristic[W];
+        SLIDING_WINDOW_HEURISTIC = new LowLevelHeuristicJM5[W];
         SLIDING_WINDOW_IMPROVEMENT = new double[W];
         I = 0;
         IT = 0;
@@ -330,14 +331,6 @@ public class LowLevelHeuristic {
     //used in the final results
     public void setNumberOfTimesApplied(int numberOfTimesApplied) {
         this.numberOfTimesApplied += numberOfTimesApplied;
-    }
-
-    public Crossover getCrossoverOperator() {
-        return crossoverOperator;
-    }
-
-    public Mutation getMutationOperator() {
-        return mutationOperator;
     }
 
     public String getName() {
