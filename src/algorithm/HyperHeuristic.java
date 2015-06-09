@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 import jmetal.util.PseudoRandom;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 
 public abstract class HyperHeuristic extends Algorithm {
@@ -80,20 +81,25 @@ public abstract class HyperHeuristic extends Algorithm {
     }
 
     public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
-        List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
-        Collections.sort(allLowLevelHeuristics, comparator);
-        List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
+        if (getInputParameter("heuristicFunction").equals(HeuristicFunctionType.Random) || comparator == null) {
+            System.out.println("here");
+            return lowLevelHeuristics.get(PseudoRandom.randInt(0, lowLevelHeuristics.size() - 1));
+        } else {
+            List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
+            Collections.sort(allLowLevelHeuristics, comparator);
+            List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
 
-        //Find the best tied heuristics
-        Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
-        LowLevelHeuristic heuristic;
-        LowLevelHeuristic nextHeuristic = iterator.next();
-        do {
-            heuristic = nextHeuristic;
-            applyingHeuristics.add(heuristic);
-        } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
+            //Find the best tied heuristics
+            Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
+            LowLevelHeuristic heuristic;
+            LowLevelHeuristic nextHeuristic = iterator.next();
+            do {
+                heuristic = nextHeuristic;
+                applyingHeuristics.add(heuristic);
+            } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
 
-        return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
+            return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
+        }
     }
 
     public void setDebugPath(String path) throws IOException {

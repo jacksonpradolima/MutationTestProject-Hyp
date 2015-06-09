@@ -2,6 +2,7 @@ package main;
 
 import algorithm.hhnsgaII.HHNSGAII;
 import experiment.Parameters;
+import experiment.Settings;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class MTTest45 {
         algorithm.addOperator("selection", selection);
 
         // Alterar e usar a partir do arquivo de configuração
-        algorithm.setInputParameter("heuristicFunction", HeuristicFunctionType.ChoiceFunction);
+        algorithm.setInputParameter("heuristicFunction", Settings.HEURISTIC_FUNCTION);
 
         HashMap parametersOperators;
 
@@ -110,7 +111,7 @@ public class MTTest45 {
         }
 
         NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
-        String path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
         FileWriter fileWriter = new FileWriter(path + "/HHResults");
 

@@ -142,7 +142,7 @@ public class ExperimentUtil {
         }
     }
 
-    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem, String[] crossovers, String[] mutations) throws JMException {
+    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem, String[] crossovers, String[] mutations, HeuristicFunctionType heuristicFunctiontype) throws JMException {
 
         Algorithm algorithm = null;
 
@@ -168,7 +168,7 @@ public class ExperimentUtil {
                     .setPopulationSize(mutationParameters.getPopulationSize())
                     .setSelectionOperator(selection)
                     .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations))
-                    .setHeuristicFunction(HeuristicFunctionType.ChoiceFunction)
+                    .setHeuristicFunction(heuristicFunctiontype)
                     .setMaxEvaluations(maxEvaluations)
                     .setDivisions(mutationParameters.getPopulationSize())
                     .build();

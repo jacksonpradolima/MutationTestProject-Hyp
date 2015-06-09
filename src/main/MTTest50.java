@@ -2,6 +2,7 @@ package main;
 
 import algorithm.hhnsgaIII.HHNSGAIII;
 import experiment.Parameters;
+import experiment.Settings;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,11 +33,11 @@ public class MTTest50 {
         //select problem
         Problem problem = new MTNSGAIII(mutationParameters.getInstance());
 
-        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem, mutationParameters.getCrossoverOperator(), mutationParameters.getMutationOperator());
+        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem, mutationParameters.getCrossoverOperator(), mutationParameters.getMutationOperator(), Settings.HEURISTIC_FUNCTION);
 
         //NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
         NonDominatedSolutionListArchive nonDominatedSolutions = new NonDominatedSolutionListArchive();
-        String path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
         FileWriter fileWriter = new FileWriter(path + "/HHResults");
 
