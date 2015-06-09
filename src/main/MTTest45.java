@@ -1,6 +1,6 @@
 package main;
 
-import algorithm.hhnsgaII.hhNSGAII;
+import algorithm.hhnsgaII.HHNSGAII;
 import experiment.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class MTTest45 {
         selection = SelectionFactory.getSelectionOperator(mutationParameters.getSelectionOperator(), null);
 
         //select algorithm
-        hhNSGAII algorithm = new hhNSGAII(problem);
+        HHNSGAII algorithm = new HHNSGAII(problem);
 
         // Algorithm params
         algorithm.setInputParameter("populationSize", mutationParameters.getPopulationSize());

@@ -18,68 +18,68 @@ import lowlevelheuristic.LowLevelHeuristic;
 
 public abstract class HyperHeuristic extends Algorithm {
 
-	private static final long serialVersionUID = 7229836683263798932L;
+    private static final long serialVersionUID = 7229836683263798932L;
 
-	private List<LowLevelHeuristic> lowLevelHeuristics;
-	
-	private FileWriter lowLevelHeuristicsRankWriter;
-	
+    private List<LowLevelHeuristic> lowLevelHeuristics;
+
+    private FileWriter lowLevelHeuristicsRankWriter;
+
     private FileWriter lowLevelHeuristicsTimeWriter;
-    
+
     private FileWriter qDebugWriter;
-    
+
     private FileWriter auxDebugWriter;
-    
+
     private FileWriter nDebugWriter;
-    
+
     private FileWriter rDebugWriter;
-    
+
     private String generationsOutputDirectory;
 
-	public HyperHeuristic(Problem problem) {
-		super(problem);
-		this.lowLevelHeuristics = new ArrayList<>();
-	}
+    public HyperHeuristic(Problem problem) {
+        super(problem);
+        this.lowLevelHeuristics = new ArrayList<>();
+    }
 
-	public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
-		LowLevelHeuristic lowLevelHeuristic = new LowLevelHeuristic(parameters);
-		if (!lowLevelHeuristics.contains(lowLevelHeuristic)) {
-			lowLevelHeuristics.add(lowLevelHeuristic);
-			return lowLevelHeuristic;
-		} else {
-			return null;
-		}
-	}
-	
-	public void clearLowLeverHeuristicsValues() {
-		LowLevelHeuristic.clearAllStaticValues();
-		for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
-			lowLevelHeuristic.clearAllValues();
-		}
-	}
+    public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
+        LowLevelHeuristic lowLevelHeuristic = new LowLevelHeuristic(parameters);
+        if (!lowLevelHeuristics.contains(lowLevelHeuristic)) {
+            lowLevelHeuristics.add(lowLevelHeuristic);
+            return lowLevelHeuristic;
+        } else {
+            return null;
+        }
+    }
 
-	public List<LowLevelHeuristic> getLowLevelHeuristics() {
-		return this.lowLevelHeuristics;
-	}
+    public void clearLowLeverHeuristicsValues() {
+        LowLevelHeuristic.clearAllStaticValues();
+        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
+            lowLevelHeuristic.clearAllValues();
+        }
+    }
 
-	public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
-		int[] allTimesApplied = new int[lowLevelHeuristics.size()];
-		for (int i = 0; i < lowLevelHeuristics.size(); i++) {
-			LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
-			allTimesApplied[i] = lowLevelHeuristic.getNumberOfTimesApplied();
-		}
-		return allTimesApplied;
-	}
+    public List<LowLevelHeuristic> getLowLevelHeuristics() {
+        return this.lowLevelHeuristics;
+    }
 
-	public int getLowLevelHeuristicsSize() {
-		return lowLevelHeuristics.size();
-	}
+    public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
+        int[] allTimesApplied = new int[lowLevelHeuristics.size()];
+        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
+            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
+            allTimesApplied[i] = lowLevelHeuristic.getNumberOfTimesApplied();
+        }
+        return allTimesApplied;
+    }
 
-	public void setLowLevelHeuristic(List<LowLevelHeuristic> lowLevelHeuristics) {
-		this.lowLevelHeuristics = lowLevelHeuristics;		
-	}
-	
-	public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
+    public int getLowLevelHeuristicsSize() {
+        return lowLevelHeuristics.size();
+    }
+
+    public void setLowLevelHeuristic(List<LowLevelHeuristic> lowLevelHeuristics) {
+        this.lowLevelHeuristics = lowLevelHeuristics;
+    }
+
+    public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
         List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
         Collections.sort(allLowLevelHeuristics, comparator);
         List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
@@ -95,8 +95,8 @@ public abstract class HyperHeuristic extends Algorithm {
 
         return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
     }
-	
-	public void setDebugPath(String path) throws IOException {
+
+    public void setDebugPath(String path) throws IOException {
         if (qDebugWriter != null) {
             qDebugWriter.close();
         }
@@ -114,8 +114,8 @@ public abstract class HyperHeuristic extends Algorithm {
         }
         nDebugWriter = new FileWriter(path + "_n.txt");
     }
-	
-	public void setGenerationsOutputDirectory(String path) throws IOException {
+
+    public void setGenerationsOutputDirectory(String path) throws IOException {
         generationsOutputDirectory = path;
     }
 
@@ -134,7 +134,7 @@ public abstract class HyperHeuristic extends Algorithm {
             Logger.getLogger(HyperHeuristic.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void setLowLevelHeuristicsRankPath(String path) throws IOException {
         if (lowLevelHeuristicsRankWriter != null) {
             lowLevelHeuristicsRankWriter.close();
@@ -148,9 +148,9 @@ public abstract class HyperHeuristic extends Algorithm {
         }
         lowLevelHeuristicsTimeWriter = new FileWriter(path);
     }
-    
-    public void debug(){
-    	if (qDebugWriter != null) {
+
+    public void debug() {
+        if (qDebugWriter != null) {
             try {
                 for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
                     qDebugWriter.write(lowLevelHeuristic.getQ() + "\t");
@@ -193,7 +193,7 @@ public abstract class HyperHeuristic extends Algorithm {
                 Logger.getLogger(HyperHeuristic.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         if (lowLevelHeuristicsRankWriter != null) {
             try {
                 for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {

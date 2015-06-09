@@ -10,7 +10,7 @@ import jmetal.util.PseudoRandom;
 /**
  * Generate a instance file which will be used on Mutation Test Problem
  * 
- * @author Thiago Nascimento
+ * @author Prado Lima
  * @since 2015-05-03
  * @version 1.0
  */

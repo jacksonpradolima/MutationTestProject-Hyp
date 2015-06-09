@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Calculates Jaccard coefficient for two sets of items.
  * 
- * @author Thiago Nascimento
+ * @author Prado Lima
  * @since 2015-05-12
  * @version 1.0
  */

@@ -5,7 +5,7 @@
  */
 package experiment;
 
-import algorithm.hhnsgaII.hhNSGAII;
+import algorithm.hhnsgaII.HHNSGAII;
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 
@@ -30,7 +30,7 @@ public class Parameters {
     public Algorithm getAlgorithmInstance(Problem problem) {
         switch (getAlgo()) {
             case hhNSGAII:
-                return new hhNSGAII(problem);
+                return new HHNSGAII(problem);
             default:
                 throw new AssertionError();
         }

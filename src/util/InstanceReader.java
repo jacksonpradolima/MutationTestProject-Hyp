@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  *
- * @author thiagodnf
+ * @author Prado Lima
  */
 public class InstanceReader {
 

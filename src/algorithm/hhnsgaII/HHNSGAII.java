@@ -17,18 +17,13 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package algorithm.hhnsgaII;
 
+import algorithm.HyperHeuristic;
 import comparators.ComparatorFactory;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import jmetal.core.*;
 import jmetal.qualityIndicator.QualityIndicator;
 import jmetal.util.Distance;
 import jmetal.util.JMException;
-import jmetal.util.PseudoRandom;
 import jmetal.util.Ranking;
 import jmetal.util.comparators.CrowdingComparator;
 import lowlevelheuristic.LowLevelHeuristic;
@@ -38,21 +33,15 @@ import lowlevelheuristic.HeuristicFunctionType;
  *
  * @author: Prado Lima
  */
-public class hhNSGAII extends Algorithm {
-
-    /**
-     * All low level heuristics
-     */
-    private final List<LowLevelHeuristic> lowLevelHeuristics;
+public class HHNSGAII extends HyperHeuristic {
 
     /**
      * Constructor
      *
      * @param problem Problem to solve
      */
-    public hhNSGAII(Problem problem) {
+    public HHNSGAII(Problem problem) {
         super(problem);
-        this.lowLevelHeuristics = new ArrayList<>();
     } // NSGAII
 
     /**
@@ -212,68 +201,4 @@ public class hhNSGAII extends Algorithm {
 
         return ranking.getSubfront(0);
     } // execute
-
-    //<editor-fold defaultstate="collapsed" desc="Methods - Low Level Heuristics">
-    public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
-        LowLevelHeuristic lowLevelHeuristic = new LowLevelHeuristic(parameters);
-        if (!lowLevelHeuristics.contains(lowLevelHeuristic)) {
-            lowLevelHeuristics.add(lowLevelHeuristic);
-            return lowLevelHeuristic;
-        } else {
-            return null;
-        }
-    }
-
-    public void clearLowLeverHeuristicsValues() {
-        LowLevelHeuristic.clearAllStaticValues();
-        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
-            lowLevelHeuristic.clearAllValues();
-        }
-    }
-
-    public List<LowLevelHeuristic> getLowLevelHeuristics() {
-        return this.lowLevelHeuristics;
-    }
-
-    public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
-        int[] allTimesApplied = new int[lowLevelHeuristics.size()];
-        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
-            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
-            allTimesApplied[i] = lowLevelHeuristic.getNumberOfTimesApplied();
-        }
-        return allTimesApplied;
-    }
-
-    public int getLowLevelHeuristicsSize() {
-        return lowLevelHeuristics.size();
-    }
-
-    public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
-        List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
-        Collections.sort(allLowLevelHeuristics, comparator);
-        List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
-
-        //Find the best tied heuristics
-        Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
-        LowLevelHeuristic heuristic;
-        LowLevelHeuristic nextHeuristic = iterator.next();
-        do {
-            heuristic = nextHeuristic;
-            applyingHeuristics.add(heuristic);
-        } while (iterator.hasNext() && comparator.compare(heuristic, nextHeuristic = iterator.next()) == 0);
-
-        return applyingHeuristics.get(PseudoRandom.randInt(0, applyingHeuristics.size() - 1));
-    }
-
-    public LowLevelHeuristic removeLowLevelHeuristic(String name) {
-        for (int i = 0; i < lowLevelHeuristics.size(); i++) {
-            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
-            if (lowLevelHeuristic.getName().equals(name)) {
-                return lowLevelHeuristics.remove(i);
-            }
-        }
-        return null;
-    }
-
-    //</editor-fold>
 } // NSGA-II

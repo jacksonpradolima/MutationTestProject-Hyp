@@ -5,7 +5,7 @@
  */
 package util.comparisons;
 
-import algorithm.hhnsgaII.hhNSGAII;
+import algorithm.hhnsgaII.HHNSGAII;
 import statistics.KruskalWallisTest;
 import java.io.File;
 import java.io.FileWriter;
@@ -748,7 +748,7 @@ public class CompareHypervolumes {
                         lastGeneration++;
                         hypervolumeWriter.append(lastGeneration + "\n");
                     } catch (IOException ex) {
-                        Logger.getLogger(hhNSGAII.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(HHNSGAII.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
