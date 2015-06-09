@@ -15,13 +15,13 @@ import jmetal.util.JMException;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.util.comparator.DominanceComparator;
+import comparators.DominanceComparatorJM5;
 
 /**
  *
  * @author Prado Lima
  */
-public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
+public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
 
     /**
      * Rank weight.
@@ -37,7 +37,7 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
      * Sliding window size.
      */
     private static int W = 0;
-    
+
     private static double c = 0;
 
     /**
@@ -83,8 +83,8 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
     private MutationOperator mutationOperator;
 
     public LowLevelHeuristicJM5(HashMap<String, Object> parameters) {
-    	super(new HashMap());
-        this.dominanceComparator = new DominanceComparator();
+        super(new HashMap());
+        this.dominanceComparator = new DominanceComparatorJM5();
 
         this.rank = 1;
         this.elapsedTime = 0;
@@ -99,13 +99,13 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
 
         if (parameters.containsKey("crossover")) {
             this.crossoverOperator = (CrossoverOperator) parameters.get("crossover");
-           // this.crossoverOperator.setParameter("probability", (double) 1);
+            // this.crossoverOperator.setParameter("probability", (double) 1);
         }
 
         if (parameters.containsKey("mutation")) {
             this.mutationOperator = (MutationOperator) parameters.get("mutation");
             if (this.mutationOperator != null) {
-             //   this.mutationOperator.setParameter("probability", (double) 1);
+                //   this.mutationOperator.setParameter("probability", (double) 1);
             }
         }
 
@@ -152,18 +152,19 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
     }
 
     public void updateRank(List<Solution> parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
-        rank = 0;
-        for (Solution parent : parents) {
-            for (Solution offspring : offsprings) {
-                rank += ((double) dominanceComparator.compare(parent, offspring) + (double) 1) / (double) 2;
+            rank = 0;
+            for (Solution parent : parents) {
+                for (Solution offspring : offsprings) {
+                    rank += ((double) dominanceComparator.compare(parent, offspring) + (double) 1) / (double) 2;
+                }
+            }
+            rank /= ((double) parents.size() * (double) offsprings.length);
+
+            
+            if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
+                creditAssignment(lowLevelHeuristics);
             }
         }
-        rank /= ((double) parents.size() * (double) offsprings.length);
-
-        if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
-            creditAssignment(lowLevelHeuristics);
-        }
-    }
 
     public void updateElapseTime(List<LowLevelHeuristicJM5> lowLevelHeuristics, LowLevelHeuristicJM5 applyingHeuristic) {
         for (LowLevelHeuristicJM5 lowLevelHeuristic : lowLevelHeuristics) {
@@ -216,11 +217,11 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
 
         return offSpring;
     }
-    
+
     public Object executeJM5(Object parents) throws JMException {
-      
+
         List<Solution> offspring = (List<Solution>) crossoverOperator.execute(parents);
-        
+
         if (mutationOperator != null) {
             for (Solution offSpringSolution : offspring) {
                 mutationOperator.execute(offSpringSolution);
@@ -228,7 +229,7 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
         }
 
         executed();
-        
+
         Solution[] s = new Solution[2];
         s[0] = offspring.get(0);
         s[1] = offspring.get(1);

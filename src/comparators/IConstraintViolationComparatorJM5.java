@@ -19,16 +19,16 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package jmetal.util.comparators;
+package comparators;
 
-import jmetal.core.Solution;
 
 import java.util.Comparator;
+import org.uma.jmetal.solution.Solution;
 
 /**
  * Interface representing constraint violation comparators.
  */
-public interface IConstraintViolationComparator extends Comparator {
+public interface IConstraintViolationComparatorJM5 extends Comparator {
   public int compare(Object o1, Object o2) ;
   public boolean needToCompare(Solution s1, Solution s2) ;
 }
