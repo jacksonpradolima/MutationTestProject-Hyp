@@ -39,7 +39,7 @@ public class HyperHeuristicsResults {
         //algorithms.add(HyperHeuristicType.HHSPEA2.toString());
 
         int numberOfObjectives = 5;
-        int numberOfExecutions = 30;
+        int numberOfExecutions = 30; 
 
         ManageResults manageResults = new ManageResults();
 
