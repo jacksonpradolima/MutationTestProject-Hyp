@@ -28,9 +28,10 @@ public class Settings {
     };
 
     public static final HyperHeuristicType[] ALGORITHMS = {
-        //HyperHeuristicType.hhNSGAIII,
         HyperHeuristicType.hhNSGAII,
-        HyperHeuristicType.hhIBEA
+        HyperHeuristicType.hhIBEA,
+        HyperHeuristicType.hhSPEA2,
+        HyperHeuristicType.hhNSGAIII
     };
 
     public static final int[] POPULATION_SIZE = {
