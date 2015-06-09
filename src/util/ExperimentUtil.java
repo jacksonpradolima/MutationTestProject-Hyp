@@ -12,6 +12,7 @@ import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
 import experiment.HyperHeuristicType;
 import static experiment.HyperHeuristicType.HHNSGAIII;
 import experiment.Parameters;
+import experiment.Settings;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -198,9 +199,8 @@ public class ExperimentUtil {
     }
 
     public static void printFinalSolutions(NonDominatedSolutionList nonDominatedSolutions, Parameters mutationParameters) {
-        String path;
+        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
-        path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";
         nonDominatedSolutions.printObjectivesToFile(pathFunAll);
@@ -208,9 +208,8 @@ public class ExperimentUtil {
     }
 
     public static void printFinalSolutions(NonDominatedSolutionListArchive nonDominatedSolutions, Parameters mutationParameters) {
-        String path;
+        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
-        path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";
         new SolutionSetOutput.Printer(nonDominatedSolutions.getSolutionList())

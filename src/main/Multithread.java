@@ -276,7 +276,6 @@ public class Multithread {
     }
 
     private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator, final HeuristicFunctionType heuristicFunction) {
-        System.out.println("Heu: " +heuristicFunction.name());
         
         final String context = Parameters.generateAlgorithmId(algorithm, populationSize, generations, "Crossovers_" + crossoverOperator.replace(",", "_"), "Mutations_" + mutationOperator.replace(",", "_"), executions, selectionOperator);
 
