@@ -28,9 +28,9 @@ public class Settings {
     };
 
     public static final HyperHeuristicType[] ALGORITHMS = {
-        HyperHeuristicType.hhNSGAII,
-        HyperHeuristicType.hhIBEA,
-        HyperHeuristicType.hhSPEA2,
+        //HyperHeuristicType.hhNSGAII,
+        //HyperHeuristicType.hhIBEA,
+        //HyperHeuristicType.hhSPEA2,
         HyperHeuristicType.hhNSGAIII
     };
 
