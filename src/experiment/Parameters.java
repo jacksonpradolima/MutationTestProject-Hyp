@@ -5,7 +5,10 @@
  */
 package experiment;
 
+import algorithm.HyperHeuristic;
+import algorithm.hhibea.HHIBEA;
 import algorithm.hhnsgaII.HHNSGAII;
+import algorithm.hhspea2.HHSPEA2;
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 
@@ -27,10 +30,14 @@ public class Parameters {
     private String context;
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    public Algorithm getAlgorithmInstance(Problem problem) {
+    public HyperHeuristic getAlgorithmInstance(Problem problem) {
         switch (getAlgo()) {
+            case hhIBEA:
+                return new HHIBEA(problem);
             case hhNSGAII:
                 return new HHNSGAII(problem);
+            case hhSPEA2:
+                return new HHSPEA2(problem);
             default:
                 throw new AssertionError();
         }
@@ -43,7 +50,7 @@ public class Parameters {
         System.out.println("Algorithm: " + getAlgo());
         System.out.println("Population: " + getPopulationSize());
         System.out.println("maxEvaluations: " + getPopulationSize() * getGenerations());
-        
+
         for (String crossoverOperator1 : crossoverOperator) {
             System.out.println("crossoverOperator: " + crossoverOperator1);
         }
@@ -51,7 +58,7 @@ public class Parameters {
         for (String mutationOperator1 : mutationOperator) {
             System.out.println("mutationOperator: " + mutationOperator1);
         }
-        
+
         System.out.println("selectionOperator: " + getSelectionOperator());
         System.out.println("executions: " + getExecutions());
         System.out.println("----------------------------------------------------");

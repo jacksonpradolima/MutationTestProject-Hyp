@@ -5,6 +5,7 @@
  */
 package util;
 
+import algorithm.HyperHeuristic;
 import algorithm.hhnsgaII.HHNSGAII;
 import algorithm.hhnsgaIII.HHNSGAIII;
 import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
@@ -243,7 +244,7 @@ public class ExperimentUtil {
         return null;
     }
 
-    public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, HHNSGAII algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
+    public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, HyperHeuristic algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
         fileWriter.write("Run: " + i + "\n");
         List<LowLevelHeuristic> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
         printHeuristicInformation(lowLevelHeuristics, i, numberOfTimesAppliedAllRuns, fileWriter);

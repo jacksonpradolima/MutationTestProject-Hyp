@@ -1,5 +1,6 @@
 package main;
 
+import algorithm.HyperHeuristic;
 import algorithm.hhnsgaII.HHNSGAII;
 import experiment.Parameters;
 import experiment.Settings;
@@ -57,7 +58,7 @@ public class MTTest45 {
         selection = SelectionFactory.getSelectionOperator(mutationParameters.getSelectionOperator(), null);
 
         //select algorithm
-        HHNSGAII algorithm = new HHNSGAII(problem);
+        HyperHeuristic algorithm = mutationParameters.getAlgorithmInstance(problem);
 
         // Algorithm params
         algorithm.setInputParameter("populationSize", mutationParameters.getPopulationSize());
