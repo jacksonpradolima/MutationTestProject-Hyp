@@ -82,7 +82,6 @@ public abstract class HyperHeuristic extends Algorithm {
 
     public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
         if (getInputParameter("heuristicFunction").equals(HeuristicFunctionType.Random) || comparator == null) {
-            System.out.println("here");
             return lowLevelHeuristics.get(PseudoRandom.randInt(0, lowLevelHeuristics.size() - 1));
         } else {
             List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);

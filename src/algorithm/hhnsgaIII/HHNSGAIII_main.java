@@ -1,5 +1,8 @@
 package algorithm.hhnsgaIII;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import jmetal.util.JMException;
@@ -14,6 +17,7 @@ import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.fileoutput.SolutionSetOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import problem.MTNSGAIII;
+import util.ExperimentUtil;
 import util.HyperHeuristicUtilJM5;
 
 @SuppressWarnings("rawtypes")
@@ -31,7 +35,11 @@ public class HHNSGAIII_main {
 		null
 	};
 
-	public static void main(String[] args) throws JMException {
+	public static void main(String[] args) throws JMException, IOException {
+            
+                List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
+                FileWriter fileWriter = new FileWriter("results/HHResults");
+                
 		Problem problem = new MTNSGAIII("instances/guizzo_cas.txt");
 
 		Algorithm algorithm = new HHNSGAIIIBuilder(problem)
@@ -54,6 +62,9 @@ public class HHNSGAIII_main {
 	        .setFunFileOutputContext(new DefaultFileOutputContext("results/FUN_HHNSGAIII"))
 	        .print();
 
+            ExperimentUtil.printSingleHeuristicInformation(fileWriter, 0, (HHNSGAIII) algorithm, numberOfTimesAppliedAllRuns);
+            fileWriter.close();
+            
 	    JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
 	    JMetalLogger.logger.info("Objectives values have been written to file FUN_HHNSGAIII");
 	    JMetalLogger.logger.info("Variables values have been written to file VAR_HHNSGAIII");
