@@ -83,7 +83,7 @@ public class LowLevelHeuristic {
     public LowLevelHeuristic(HashMap<String, Object> parameters) {
         this.dominanceComparator = new DominanceComparator();
 
-        this.rank = 0.5;
+        this.rank = 1;
         this.elapsedTime = 0;
         this.numberOfTimesApplied = 0;
         this.lastTimeApplied = 0;

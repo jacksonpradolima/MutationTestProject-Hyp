@@ -35,11 +35,11 @@ public class HHNSGAIII_main {
 		Problem problem = new MTNSGAIII("instances/guizzo_cas.txt");
 
 		Algorithm algorithm = new HHNSGAIIIBuilder(problem)
-			.setPopulationSize(100)
+			.setPopulationSize(200)
 			.setSelectionOperator(new BinaryTournamentSelection())
 			.setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations))
 			.setHeuristicFunction(HeuristicFunctionType.ChoiceFunction)
-			.setMaxEvaluations(100000)
+			.setMaxEvaluations(200*600)
 			.setDivisions(100)
 			.build();
 

@@ -1,10 +1,13 @@
 package main;
 
+import algorithm.hhnsgaIII.HHNSGAIII;
 import experiment.Parameters;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import jmetal.util.JMException;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaiii.NSGAIII;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.AlgorithmRunner;
@@ -13,14 +16,13 @@ import org.uma.jmetal.util.archive.impl.NonDominatedSolutionListArchive;
 import org.uma.jmetal.util.fileoutput.SolutionSetOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 
-
 import problem.MTNSGAIII;
 import util.ExperimentUtil;
 
 //experimental class for jmetal 5.0
 public class MTTest50 {
 
-    public static void main(String[] args) throws JMetalException, JMException {
+    public static void main(String[] args) throws JMetalException, JMException, IOException {
 
         Parameters mutationParameters = ExperimentUtil.verifyParameters(args);
 
@@ -30,24 +32,27 @@ public class MTTest50 {
         //select problem
         Problem problem = new MTNSGAIII(mutationParameters.getInstance());
 
-        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem);
+        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem, mutationParameters.getCrossoverOperator(), mutationParameters.getMutationOperator());
 
         //NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
         NonDominatedSolutionListArchive nonDominatedSolutions = new NonDominatedSolutionListArchive();
-        String path = "";
+        String path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
+        FileWriter fileWriter = new FileWriter(path + "/HHResults");
+
 
         /* Execute the Algorithm */
         for (int i = 0; i < mutationParameters.getExecutions(); i++) {
             NonDominatedSolutionListArchive actualNonDominatedSolutions = new NonDominatedSolutionListArchive();
 
             System.out.println("Run: " + i);
+
             AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
-            List<Solution> population = ((NSGAIII) algorithm).getResult();
+            List<Solution> population = ((HHNSGAIII) algorithm).getResult();
             long computingTime = algorithmRunner.getComputingTime();
             System.out.println("Total time of execution: " + computingTime);
 
             /* Log messages */
-            path = String.format("experiment/%s/%s/F%s/%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getContext());
             String pathFun = String.format("%s/FUN_%s", path, i);
             String pathVar = String.format("%s/VAR_%s", path, i);
 
@@ -65,12 +70,12 @@ public class MTTest50 {
                     .setFunFileOutputContext(new DefaultFileOutputContext(pathFun))
                     .print();
 
+            ExperimentUtil.printSingleHeuristicInformation(fileWriter, i, (HHNSGAIII) algorithm, numberOfTimesAppliedAllRuns);
         }
 
-        ExperimentUtil.printFinalSolutions(nonDominatedSolutions, mutationParameters);
+        ExperimentUtil.printAllHeuristicsInformation(fileWriter, numberOfTimesAppliedAllRuns);
+        fileWriter.close();
 
-//        JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-//        JMetalLogger.logger.info("Objectives values have been written to file FUN.tsv");
-//        JMetalLogger.logger.info("Variables values have been written to file VAR.tsv");
+        ExperimentUtil.printFinalSolutions(nonDominatedSolutions, mutationParameters);
     }
 }

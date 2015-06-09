@@ -342,7 +342,7 @@ public class Multithread {
 
     private static String getExperimentClassName(final HyperHeuristicType algorithm) {
         String experimentName = "main.MTTest45";
-        if (algorithm.name().equals("NSGAIII")) {
+        if (algorithm.name().equals("NSGAIII") || algorithm.name().equals("hhNSGAIII")) {
             experimentName = "main.MTTest50";
         }
         return experimentName;
