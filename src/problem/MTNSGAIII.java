@@ -9,58 +9,48 @@ import org.uma.jmetal.problem.impl.AbstractBinaryProblem;
 import org.uma.jmetal.solution.BinarySolution;
 import org.uma.jmetal.util.JMetalException;
 
-import util.InstanceReader;
-
+/**
+ *
+ * @author Thiago Nascimento
+ *
+ */
 public class MTNSGAIII extends AbstractBinaryProblem implements ConstrainedProblem<BinarySolution> {
 
     private static final long serialVersionUID = 7488414018042022225L;
 
-    private int[][] coverage;
+    public final MTProblemBase problemBase;
 
-    private int numberOfTestSuite;
-
-    private int numberOfMutants;
-
-    public MTNSGAIII(String filename) {
-        // Read Instance's file
-        InstanceReader reader = new InstanceReader(filename);
-
-        reader.open();
-        this.numberOfTestSuite = reader.readInt();
-        this.numberOfMutants = reader.readInt();
-        this.coverage = reader.readIntMatrix(numberOfMutants, numberOfTestSuite, " ");
-        reader.close();
-
+    public void defineJMetalSettings() {
         setNumberOfVariables(1);
         setNumberOfObjectives(2);
-        setName("MutationTestProblem4NSGAIII");
+        setName("Mutation Test Problem - NSGAIII");
     }
 
     public MTNSGAIII(int numberOfTestSuite, int numberOfMutants, int[][] coverage) {
-        this.coverage = coverage;
-        this.numberOfMutants = numberOfMutants;
-        this.numberOfTestSuite = numberOfTestSuite;
+        problemBase = new MTProblemBase(numberOfTestSuite, numberOfMutants, coverage);
 
-        setNumberOfVariables(1);
-        setNumberOfObjectives(2);
-        setName("MutationTestProblem4NSGAIII");
+        defineJMetalSettings();
+    }
+
+    public MTNSGAIII(String filename) {
+        problemBase = new MTProblemBase(filename);
+
+        defineJMetalSettings();
     }
 
     @Override
     public void evaluate(BinarySolution solution) {
-		// TODO Auto-generated method stub
-
         //Binary s = (Binary) solution.getDecisionVariables()[0];
         BitSet bitset = solution.getVariableValue(0);
 
-        Binary s = new Binary(numberOfTestSuite);
+        Binary s = new Binary(problemBase.getNumberOfTestSuite());
         s.bits_ = bitset;
 
-        double mutationScore = getMutantionScore(s);
-        double numberOfSelectedTestSuite = getNumberOfSelectedTestSuite(s);
+        // Maximize the mutation score
+        solution.setObjective(0, problemBase.getMutantionScore(s) * -1);
 
-        solution.setObjective(0, mutationScore * -1.0);
-        solution.setObjective(1, numberOfSelectedTestSuite);
+        // Minimize the number of test cases (Products)
+        solution.setObjective(1, problemBase.getTestScore(s));
     }
 
     @Override
@@ -68,96 +58,21 @@ public class MTNSGAIII extends AbstractBinaryProblem implements ConstrainedProbl
         if (index != 0) {
             throw new JMetalException("Problem MutationTestProblem4NSGAIII has only a variable. Index = " + index);
         }
-        return numberOfTestSuite;
-    }
-
-    public double getMutantionScore(Binary s) {
-        int deadMutants = getNumberOfDifferentKilledMutants(s); //dm(p,t)
-        double totalMutants = numberOfMutants; //m(p)
-        return (double) deadMutants / (double) totalMutants; //ms(p,t)
-    }
-
-    public double fitnessFunction(double mutationScore, double numberOfSelectedTestCases) {
-        if (numberOfSelectedTestCases == 0) {
-            return 0;
-        }
-        return mutationScore / numberOfSelectedTestCases;
-    }
-
-    public double fitnessFunction(double alfa, double beta, double mutationScore, double numberOfSelectedTestCases, double numberOfTestCases) {
-        double minimizationScore = ((1.0 / numberOfTestCases) * numberOfSelectedTestCases);
-        return (alfa * mutationScore) - (beta * minimizationScore);
-    }
-
-    public int getNumberOfSelectedTestSuite(Binary solution) {
-        if (solution == null) {
-            throw new IllegalArgumentException("Solution cannot be null");
-        }
-
-        int total = 0;
-
-        for (int i = 0; i < solution.getNumberOfBits(); i++) {
-            if (solution.getIth(i)) {
-                total++;
-            }
-        }
-
-        return total;
-    }
-
-    public int getNumberOfKilledMutants(int idTestSuite) {
-        if (idTestSuite >= numberOfTestSuite) {
-            throw new IllegalArgumentException("Test Suite'id should be >= number of test suite");
-        }
-
-        int total = 0;
-
-        for (int i = 0; i < numberOfMutants; i++) {
-            if (coverage[i][idTestSuite] == 1) {
-                total++;
-            }
-        }
-
-        return total;
-    }
-
-    public int getNumberOfDifferentKilledMutants(Binary solution) {
-        if (solution == null) {
-            throw new IllegalArgumentException("Solution cannot be null");
-        }
-
-        int[] visited = new int[numberOfMutants];
-        int total = 0;
-
-        for (int i = 0; i < solution.getNumberOfBits(); i++) {
-            if (solution.getIth(i)) {
-                // Test Suite was selected by metaheurist
-                for (int j = 0; j < numberOfMutants; j++) {
-                    if (coverage[j][i] == 1 && visited[j] == 0) {
-                        // Test Suit has not yet been visited
-                        visited[j] = 1;
-                        total++;
-                    }
-                }
-            }
-        }
-
-        return total;
+        return problemBase.getNumberOfTestSuite();
     }
 
     @Override
     public void evaluateConstraints(BinarySolution solution) {
         BitSet bitset = solution.getVariableValue(0);
 
-        Binary binary = new Binary(numberOfTestSuite);
-        binary.bits_ = bitset;
+        Binary s = new Binary(problemBase.getNumberOfTestSuite());
+        s.bits_ = bitset;
 
-        int numberOfSelectedTestSuite = getNumberOfSelectedTestSuite(binary);
-        if (numberOfSelectedTestSuite == 0) {
-            int random = PseudoRandom.randInt(0, binary.getNumberOfBits() - 1);
-            binary.setIth(random, true);
+        // Leastwise a test case must be selected
+        if (problemBase.getNumberOfSelectedTestSuite(s) == 0) {
+            int random = PseudoRandom.randInt(0, s.getNumberOfBits() - 1);
+            s.setIth(random, true);
             evaluate(solution);
         }
-
     }
 }
