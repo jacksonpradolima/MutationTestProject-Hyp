@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package statistics;
+package main;
 
 import experiment.HyperHeuristicType;
 import java.io.FileNotFoundException;
