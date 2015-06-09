@@ -86,7 +86,7 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic{
     	super(new HashMap());
         this.dominanceComparator = new DominanceComparator();
 
-        this.rank = 0.5;
+        this.rank = 1;
         this.elapsedTime = 0;
         this.numberOfTimesApplied = 0;
         this.lastTimeApplied = 0;

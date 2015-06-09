@@ -5,7 +5,7 @@
  */
 package util.comparisons;
 
-import algorithm.hhNSGAII;
+import algorithm.hhnsgaII.hhNSGAII;
 import statistics.KruskalWallisTest;
 import java.io.File;
 import java.io.FileWriter;

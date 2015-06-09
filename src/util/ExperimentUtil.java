@@ -5,8 +5,11 @@
  */
 package util;
 
-import algorithm.hhNSGAII;
+import algorithm.hhnsgaII.hhNSGAII;
+import algorithm.hhnsgaIII.HHNSGAIII;
+import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
 import experiment.HyperHeuristicType;
+import static experiment.HyperHeuristicType.hhNSGAIII;
 import experiment.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import jmetal.util.JMException;
 import jmetal.util.NonDominatedSolutionList;
+import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
 import operators.crossover.UniformCrossoverBinary4NSGAIII;
 import operators.mutation.SwapMutationBinary4NSGAIII;
@@ -25,6 +29,7 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.crossover.SinglePointCrossover;
 import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
+import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.archive.impl.NonDominatedSolutionListArchive;
@@ -99,7 +104,7 @@ public class ExperimentUtil {
         if (args[8] != null && !args[8].trim().equals("")) {
             mutationParameters.setSelectionOperator(args[8]);
         }
-        
+
         return mutationParameters;
     }
 
@@ -137,18 +142,15 @@ public class ExperimentUtil {
         }
     }
 
-    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem) throws JMException {
+    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem, String[] crossovers, String[] mutations) throws JMException {
 
         Algorithm algorithm = null;
 
         CrossoverOperator crossover = getCrossoverOperator(mutationParameters);
-        System.out.println("CrossoverOperator: " + crossover);
 
         MutationOperator mutation = getMutationOperator(mutationParameters);
-        System.out.println("mutationOperator:" + mutation);
 
         SelectionOperator selection = getSelectionOperator(mutationParameters);
-        System.out.println("selectionOperator:" + selection);
 
         int maxEvaluations = mutationParameters.getPopulationSize() * mutationParameters.getGenerations();
 
@@ -158,6 +160,15 @@ public class ExperimentUtil {
                     .setMutationOperator(mutation)
                     .setSelectionOperator(selection)
                     .setPopulationSize(mutationParameters.getPopulationSize())
+                    .setMaxEvaluations(maxEvaluations)
+                    .setDivisions(mutationParameters.getPopulationSize())
+                    .build();
+        } else if (mutationParameters.getAlgo().name().equalsIgnoreCase("HHNSGAIII")) {
+            algorithm = new HHNSGAIIIBuilder(problem)
+                    .setPopulationSize(mutationParameters.getPopulationSize())
+                    .setSelectionOperator(selection)
+                    .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations))
+                    .setHeuristicFunction(HeuristicFunctionType.ChoiceFunction)
                     .setMaxEvaluations(maxEvaluations)
                     .setDivisions(mutationParameters.getPopulationSize())
                     .build();
@@ -188,7 +199,7 @@ public class ExperimentUtil {
     public static void printFinalSolutions(NonDominatedSolutionList nonDominatedSolutions, Parameters mutationParameters) {
         String path;
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
-        path = String.format("experiment/%s/%s/%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getContext());
+        path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";
         nonDominatedSolutions.printObjectivesToFile(pathFunAll);
@@ -198,7 +209,7 @@ public class ExperimentUtil {
     public static void printFinalSolutions(NonDominatedSolutionListArchive nonDominatedSolutions, Parameters mutationParameters) {
         String path;
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
-        path = String.format("experiment/%s/%s/%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getContext());
+        path = String.format("experiment/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";
         new SolutionSetOutput.Printer(nonDominatedSolutions.getSolutionList())
@@ -236,6 +247,18 @@ public class ExperimentUtil {
     public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, hhNSGAII algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
         fileWriter.write("Run: " + i + "\n");
         List<LowLevelHeuristic> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
+        printHeuristicInformation(lowLevelHeuristics, i, numberOfTimesAppliedAllRuns, fileWriter);
+        algorithm.clearLowLeverHeuristicsValues();
+    }
+
+    public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, HHNSGAIII algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
+        fileWriter.write("Run: " + i + "\n");
+        List<LowLevelHeuristic> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
+        printHeuristicInformation(lowLevelHeuristics, i, numberOfTimesAppliedAllRuns, fileWriter);
+        algorithm.clearLowLeverHeuristicsValues();
+    }
+
+    private static void printHeuristicInformation(List<LowLevelHeuristic> lowLevelHeuristics, int i, List<Integer> numberOfTimesAppliedAllRuns, FileWriter fileWriter) throws IOException {
         for (int j = 0; j < lowLevelHeuristics.size(); j++) {
             if (i == 0) {
                 numberOfTimesAppliedAllRuns.add(lowLevelHeuristics.get(j).getNumberOfTimesApplied());
@@ -245,7 +268,6 @@ public class ExperimentUtil {
             }
             fileWriter.write("Low Level Heuristic " + lowLevelHeuristics.get(j).getName() + " applied " + lowLevelHeuristics.get(j).getNumberOfTimesApplied() + " times\n");
         }
-        algorithm.clearLowLeverHeuristicsValues();
     }
 
     public static void printAllHeuristicsInformation(FileWriter fileWriter, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {

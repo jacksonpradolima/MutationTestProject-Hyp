@@ -11,5 +11,6 @@ package lowlevelheuristic;
  */
 public enum HeuristicFunctionType {
     ChoiceFunction,
-    MultiArmedBandit
+    MultiArmedBandit,
+    Random
 }

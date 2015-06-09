@@ -21,6 +21,8 @@ public class ComparatorFactory {
                 return new ChoiceFunctionComparator();
             case MultiArmedBandit:
                 return new MultiArmedBanditComparator();
+            case Random:
+                //return new MultiArmedBanditComparator();
             default:
                 return null;
         }

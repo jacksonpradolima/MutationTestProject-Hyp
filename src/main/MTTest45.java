@@ -1,6 +1,6 @@
 package main;
 
-import algorithm.hhNSGAII;
+import algorithm.hhnsgaII.hhNSGAII;
 import experiment.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
