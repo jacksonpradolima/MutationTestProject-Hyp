@@ -22,7 +22,7 @@ public class ComparatorFactory {
             case MultiArmedBandit:
                 return new MultiArmedBanditComparator();
             case Random:
-                //return new MultiArmedBanditComparator();
+                return new RandomComparator();
             default:
                 return null;
         }

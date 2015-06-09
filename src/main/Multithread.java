@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lowlevelheuristic.HeuristicFunctionType;
 
 public class Multithread {
 
@@ -99,7 +100,7 @@ public class Multithread {
                     for (final int populationSize : Settings.POPULATION_SIZE) {
                         for (final int generations : Settings.GENERATIONS) {
                             for (final String selectionOperator : Settings.SELECTION_OPERATORS) {
-                                createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator);
+                                createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator, Settings.HEURISTIC_FUNCTION);
                             }
                         }
                     }
@@ -271,11 +272,12 @@ public class Multithread {
         final String mutationOperator = String.valueOf(split[6]);
         final int executions = Integer.valueOf(split[7]);
 
-        createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, context);
+        createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, context, Settings.HEURISTIC_FUNCTION);
     }
 
-    private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator) {
-
+    private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator, final HeuristicFunctionType heuristicFunction) {
+        System.out.println("Heu: " +heuristicFunction.name());
+        
         final String context = Parameters.generateAlgorithmId(algorithm, populationSize, generations, "Crossovers_" + crossoverOperator.replace(",", "_"), "Mutations_" + mutationOperator.replace(",", "_"), executions, selectionOperator);
 
         final Thread thread = new Thread(new Runnable() {
@@ -297,10 +299,11 @@ public class Multithread {
                             "" + mutationOperator,
                             "" + executions,
                             "" + context,
-                            "" + selectionOperator
+                            "" + selectionOperator,
+                            "" + heuristicFunction
                     );
 
-                    String pathFile = String.format("experiment/%s/%s/%s-%s", getInstanceName(instance), algorithm, populationSize, generations);
+                    String pathFile = String.format("experiment/%s/%s/%s/%s-%s", getInstanceName(instance), algorithm, heuristicFunction, populationSize, generations);
 
                     final File destination = new File(String.format("%s/SYSTEM_OUTPUT.txt", pathFile));
                     final File errorDestination = new File(String.format("%s/SYSTEM_ERROR.txt", pathFile));
