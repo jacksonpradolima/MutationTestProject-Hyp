@@ -32,11 +32,11 @@ public class Parameters {
     //<editor-fold defaultstate="collapsed" desc="Methods">
     public HyperHeuristic getAlgorithmInstance(Problem problem) {
         switch (getAlgo()) {
-            case hhIBEA:
+            case HHIBEA:
                 return new HHIBEA(problem);
-            case hhNSGAII:
+            case HHNSGAII:
                 return new HHNSGAII(problem);
-            case hhSPEA2:
+            case HHSPEA2:
                 return new HHSPEA2(problem);
             default:
                 throw new AssertionError();

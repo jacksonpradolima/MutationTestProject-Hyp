@@ -10,7 +10,7 @@ import algorithm.hhnsgaII.HHNSGAII;
 import algorithm.hhnsgaIII.HHNSGAIII;
 import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
 import experiment.HyperHeuristicType;
-import static experiment.HyperHeuristicType.hhNSGAIII;
+import static experiment.HyperHeuristicType.HHNSGAIII;
 import experiment.Parameters;
 import java.io.FileWriter;
 import java.io.IOException;
