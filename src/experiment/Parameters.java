@@ -5,7 +5,7 @@
  */
 package experiment;
 
-import algorithm.hhNSGAII;
+import algorithm.hhnsgaII.hhNSGAII;
 import jmetal.core.Algorithm;
 import jmetal.core.Problem;
 

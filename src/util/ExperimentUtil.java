@@ -5,7 +5,7 @@
  */
 package util;
 
-import algorithm.hhNSGAII;
+import algorithm.hhnsgaII.hhNSGAII;
 import algorithm.hhnsgaIII.HHNSGAIII;
 import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
 import experiment.HyperHeuristicType;
