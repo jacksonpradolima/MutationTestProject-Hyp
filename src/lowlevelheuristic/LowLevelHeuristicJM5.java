@@ -21,7 +21,7 @@ import comparators.DominanceComparatorJM5;
  *
  * @author Prado Lima
  */
-public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
+public class LowLevelHeuristicJM5 {
 
     /**
      * Rank weight.
@@ -83,7 +83,7 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
     private MutationOperator mutationOperator;
 
     public LowLevelHeuristicJM5(HashMap<String, Object> parameters) {
-        super(new HashMap());
+        //super(new HashMap());
         this.dominanceComparator = new DominanceComparatorJM5();
 
         this.rank = 1;
@@ -151,20 +151,19 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
         }
     }
 
-    public void updateRank(List<Solution> parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristic> lowLevelHeuristics) {
-            rank = 0;
-            for (Solution parent : parents) {
-                for (Solution offspring : offsprings) {
-                    rank += ((double) dominanceComparator.compare(parent, offspring) + (double) 1) / (double) 2;
-                }
-            }
-            rank /= ((double) parents.size() * (double) offsprings.length);
-
-            
-            if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
-                creditAssignment(lowLevelHeuristics);
+    public void updateRank(List<Solution> parents, Solution[] offsprings, HeuristicFunctionType heuristicFunction, List<LowLevelHeuristicJM5> lowLevelHeuristics) {
+        rank = 0;
+        for (Solution parent : parents) {
+            for (Solution offspring : offsprings) {
+                rank += ((double) dominanceComparator.compare(parent, offspring) + (double) 1) / (double) 2;
             }
         }
+        rank /= ((double) parents.size() * (double) offsprings.length);
+
+        if (HeuristicFunctionType.MultiArmedBandit == heuristicFunction) {
+            creditAssignment(lowLevelHeuristics);
+        }
+    }
 
     public void updateElapseTime(List<LowLevelHeuristicJM5> lowLevelHeuristics, LowLevelHeuristicJM5 applyingHeuristic) {
         for (LowLevelHeuristicJM5 lowLevelHeuristic : lowLevelHeuristics) {
@@ -233,7 +232,6 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
         Solution[] s = new Solution[2];
         s[0] = offspring.get(0);
         s[1] = offspring.get(1);
-        
 
         return s;
     }
@@ -294,6 +292,27 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
         REBOOTS++;
     }
 
+    protected void creditAssignment(List<LowLevelHeuristicJM5> heuristics) {
+        if (W != 0) {
+            LowLevelHeuristicJM5 temp = SLIDING_WINDOW_HEURISTIC[I];
+            SLIDING_WINDOW_HEURISTIC[I] = this;
+            SLIDING_WINDOW_IMPROVEMENT[I] = this.rank;
+            if (temp != null) {
+                temp.updateReward();
+            }
+            this.updateReward();
+            I++;
+            I %= W;
+
+            SUM_N = 0;
+            for (LowLevelHeuristicJM5 heuristic : heuristics) {
+                heuristic.updateQ();
+                heuristic.updateN();
+                SUM_N += heuristic.n;
+            }
+        }
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     /*
      Getters and setters.

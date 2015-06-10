@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import lowlevelheuristic.LowLevelHeuristic;
 import lowlevelheuristic.LowLevelHeuristicJM5;
 import operators.crossover.TwoPointsCrossoverBinary4NSGAIII;
 import operators.crossover.UniformCrossoverBinary4NSGAIII;
@@ -16,8 +15,8 @@ import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
 public class HyperHeuristicUtilJM5 {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<LowLevelHeuristic> getLowLevelHeuristics(String[] crossovers, String[] mutations) {
-		List<LowLevelHeuristic> list = new ArrayList<LowLevelHeuristic>();
+	public static List<LowLevelHeuristicJM5> getLowLevelHeuristics(String[] crossovers, String[] mutations) {
+		List<LowLevelHeuristicJM5> list = new ArrayList<LowLevelHeuristicJM5>();
 		
 		int id = 1;
 
@@ -69,8 +68,8 @@ public class HyperHeuristicUtilJM5 {
 	}
 	
 
-	public static void print(List<LowLevelHeuristic> lowLevelHeuristics) {
-		for(LowLevelHeuristic lowLevel : lowLevelHeuristics){
+	public static void print(List<LowLevelHeuristicJM5> lowLevelHeuristics) {
+		for(LowLevelHeuristicJM5 lowLevel : lowLevelHeuristics){
 			System.out.println(lowLevel);
 		}
 	}

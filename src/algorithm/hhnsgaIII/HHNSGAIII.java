@@ -11,7 +11,6 @@ import java.util.Vector;
 import jmetal.util.JMException;
 import jmetal.util.PseudoRandom;
 import lowlevelheuristic.HeuristicFunctionType;
-import lowlevelheuristic.LowLevelHeuristic;
 import lowlevelheuristic.LowLevelHeuristicJM5;
 
 import org.uma.jmetal.algorithm.impl.AbstractGeneticAlgorithm;
@@ -24,7 +23,7 @@ import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.solutionattribute.Ranking;
 import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 
-import comparators.ComparatorFactory;
+import comparators.ComparatorFactoryJM5;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>> {
@@ -47,7 +46,7 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
 
     protected HeuristicFunctionType heuristicFunction;
 
-    private List<LowLevelHeuristic> lowLevelHeuristics;
+    private List<LowLevelHeuristicJM5> lowLevelHeuristics;
 
     public static HHNSGAIIIBuilder Builder;
 
@@ -133,7 +132,7 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
     @Override
     protected List<Solution> reproduction(List<Solution> population) {
         // Define the heuristic function
-        Comparator<LowLevelHeuristic> heuristicFunctionComparator = ComparatorFactory.createComparator(heuristicFunction);
+        Comparator<LowLevelHeuristicJM5> heuristicFunctionComparator = ComparatorFactoryJM5.createComparator(heuristicFunction);
 
         List<Solution> offspringPopulation = new ArrayList<>(populationSize);
         for (int i = 0; i < populationSize; i += 2) {
@@ -250,7 +249,7 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
         return SolutionListUtils.getNondominatedSolutions(solutionList);
     }
 
-    public LowLevelHeuristic addLowLevelHeuristic(HashMap<String, Object> parameters) {
+    public LowLevelHeuristicJM5 addLowLevelHeuristic(HashMap<String, Object> parameters) {
         LowLevelHeuristicJM5 lowLevelHeuristic = new LowLevelHeuristicJM5(parameters);
         if (!lowLevelHeuristics.contains(lowLevelHeuristic)) {
             lowLevelHeuristics.add(lowLevelHeuristic);
@@ -261,20 +260,21 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
     }
 
     public void clearLowLeverHeuristicsValues() {
-        LowLevelHeuristic.clearAllStaticValues();
-        for (LowLevelHeuristic lowLevelHeuristic : lowLevelHeuristics) {
+        LowLevelHeuristicJM5.clearAllStaticValues();
+        for (LowLevelHeuristicJM5 lowLevelHeuristic : lowLevelHeuristics) {
             lowLevelHeuristic.clearAllValues();
         }
     }
 
-    public List<LowLevelHeuristic> getLowLevelHeuristics() {
+    public List<LowLevelHeuristicJM5> getLowLevelHeuristics() {
         return this.lowLevelHeuristics;
     }
+    
 
     public int[] getLowLevelHeuristicsNumberOfTimesApplied() {
         int[] allTimesApplied = new int[lowLevelHeuristics.size()];
         for (int i = 0; i < lowLevelHeuristics.size(); i++) {
-            LowLevelHeuristic lowLevelHeuristic = lowLevelHeuristics.get(i);
+            LowLevelHeuristicJM5 lowLevelHeuristic = lowLevelHeuristics.get(i);
             allTimesApplied[i] = lowLevelHeuristic.getNumberOfTimesApplied();
         }
         return allTimesApplied;
@@ -284,22 +284,22 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
         return lowLevelHeuristics.size();
     }
 
-    public void setLowLevelHeuristic(List<LowLevelHeuristic> lowLevelHeuristics) {
+    public void setLowLevelHeuristic(List<LowLevelHeuristicJM5> lowLevelHeuristics) {
         this.lowLevelHeuristics = lowLevelHeuristics;
     }
 
-    public LowLevelHeuristic getApplyingHeuristic(Comparator<LowLevelHeuristic> comparator) {
+    public LowLevelHeuristicJM5 getApplyingHeuristic(Comparator<LowLevelHeuristicJM5> comparator) {
         if (heuristicFunction.name().equals(HeuristicFunctionType.Random.name()) || comparator == null) {
             return lowLevelHeuristics.get(PseudoRandom.randInt(0, lowLevelHeuristics.size() - 1));
         } else {
-            List<LowLevelHeuristic> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
+            List<LowLevelHeuristicJM5> allLowLevelHeuristics = new ArrayList<>(lowLevelHeuristics);
             Collections.sort(allLowLevelHeuristics, comparator);
-            List<LowLevelHeuristic> applyingHeuristics = new ArrayList<>();
+            List<LowLevelHeuristicJM5> applyingHeuristics = new ArrayList<>();
 
             //Find the best tied heuristics
-            Iterator<LowLevelHeuristic> iterator = allLowLevelHeuristics.iterator();
-            LowLevelHeuristic heuristic;
-            LowLevelHeuristic nextHeuristic = iterator.next();
+            Iterator<LowLevelHeuristicJM5> iterator = allLowLevelHeuristics.iterator();
+            LowLevelHeuristicJM5 heuristic;
+            LowLevelHeuristicJM5 nextHeuristic = iterator.next();
             do {
                 heuristic = nextHeuristic;
                 applyingHeuristics.add(heuristic);

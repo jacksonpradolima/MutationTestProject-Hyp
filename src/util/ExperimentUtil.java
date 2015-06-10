@@ -6,11 +6,9 @@
 package util;
 
 import algorithm.HyperHeuristic;
-import algorithm.hhnsgaII.HHNSGAII;
 import algorithm.hhnsgaIII.HHNSGAIII;
 import algorithm.hhnsgaIII.HHNSGAIIIBuilder;
 import experiment.HyperHeuristicType;
-import static experiment.HyperHeuristicType.HHNSGAIII;
 import experiment.Parameters;
 import experiment.Settings;
 import java.io.FileWriter;
@@ -21,6 +19,7 @@ import jmetal.util.JMException;
 import jmetal.util.NonDominatedSolutionList;
 import lowlevelheuristic.HeuristicFunctionType;
 import lowlevelheuristic.LowLevelHeuristic;
+import lowlevelheuristic.LowLevelHeuristicJM5;
 import operators.crossover.UniformCrossoverBinary4NSGAIII;
 import operators.mutation.SwapMutationBinary4NSGAIII;
 import operators.selection.BinaryTournament24NSGAIII;
@@ -31,7 +30,6 @@ import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.crossover.SinglePointCrossover;
 import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
-import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.archive.impl.NonDominatedSolutionListArchive;
@@ -253,9 +251,21 @@ public class ExperimentUtil {
 
     public static void printSingleHeuristicInformation(FileWriter fileWriter, int i, HHNSGAIII algorithm, List<Integer> numberOfTimesAppliedAllRuns) throws IOException {
         fileWriter.write("Run: " + i + "\n");
-        List<LowLevelHeuristic> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
-        printHeuristicInformation(lowLevelHeuristics, i, numberOfTimesAppliedAllRuns, fileWriter);
+        List<LowLevelHeuristicJM5> lowLevelHeuristics = algorithm.getLowLevelHeuristics();
+        printHeuristicInformationJM5(lowLevelHeuristics, i, numberOfTimesAppliedAllRuns, fileWriter);
         algorithm.clearLowLeverHeuristicsValues();
+    }
+
+    private static void printHeuristicInformationJM5(List<LowLevelHeuristicJM5> lowLevelHeuristics, int i, List<Integer> numberOfTimesAppliedAllRuns, FileWriter fileWriter) throws IOException {
+        for (int j = 0; j < lowLevelHeuristics.size(); j++) {
+            if (i == 0) {
+                numberOfTimesAppliedAllRuns.add(lowLevelHeuristics.get(j).getNumberOfTimesApplied());
+            } else {
+                int numberOfTimesApplied = lowLevelHeuristics.get(j).getNumberOfTimesApplied();
+                numberOfTimesAppliedAllRuns.set(j, numberOfTimesAppliedAllRuns.get(j) + numberOfTimesApplied);
+            }
+            fileWriter.write("Low Level Heuristic " + lowLevelHeuristics.get(j).getName() + " applied " + lowLevelHeuristics.get(j).getNumberOfTimesApplied() + " times\n");
+        }
     }
 
     private static void printHeuristicInformation(List<LowLevelHeuristic> lowLevelHeuristics, int i, List<Integer> numberOfTimesAppliedAllRuns, FileWriter fileWriter) throws IOException {

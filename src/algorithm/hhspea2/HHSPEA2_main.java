@@ -38,7 +38,7 @@ public class HHSPEA2_main {
         Configuration.logger_.addHandler(new FileHandler(directory + "hhspea2.log"));
 
         // Problem
-        Problem problem = new MTProblem("instances/guizzo_cas.txt");
+        Problem problem = new MTProblem("instances/find.txt");
 
         System.out.println("Problema: " + problem.getName());
 
