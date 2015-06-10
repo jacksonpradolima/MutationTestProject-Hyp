@@ -233,6 +233,7 @@ public class LowLevelHeuristicJM5 extends LowLevelHeuristic {
         Solution[] s = new Solution[2];
         s[0] = offspring.get(0);
         s[1] = offspring.get(1);
+        
 
         return s;
     }

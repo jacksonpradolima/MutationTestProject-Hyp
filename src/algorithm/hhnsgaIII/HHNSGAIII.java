@@ -151,7 +151,11 @@ public class HHNSGAIII extends AbstractGeneticAlgorithm<Solution, List<Solution>
             } catch (JMException e) {
                 e.printStackTrace();
             }
-
+            
+            //added to hyperheuristic works
+            problem.evaluate(offSpring[0]);
+            problem.evaluate(offSpring[1]);
+            
             offspringPopulation.add(offSpring[0]);
             offspringPopulation.add(offSpring[1]);
 
