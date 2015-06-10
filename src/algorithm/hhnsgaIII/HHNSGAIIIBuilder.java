@@ -3,7 +3,6 @@ package algorithm.hhnsgaIII;
 import java.util.List;
 
 import lowlevelheuristic.HeuristicFunctionType;
-import lowlevelheuristic.LowLevelHeuristic;
 import lowlevelheuristic.LowLevelHeuristicJM5;
 
 import org.uma.jmetal.operator.SelectionOperator;
@@ -26,7 +25,7 @@ public class HHNSGAIIIBuilder implements AlgorithmBuilder {
 	SolutionListEvaluator evaluator;
 	int divisions;
 
-	List<LowLevelHeuristic> lowLevelHeuristics;
+	List<LowLevelHeuristicJM5> lowLevelHeuristics;
 	
 	HeuristicFunctionType heuristicFunction;
 
@@ -75,7 +74,7 @@ public class HHNSGAIIIBuilder implements AlgorithmBuilder {
 		return new HHNSGAIII(this);
 	}
 
-	public HHNSGAIIIBuilder setLowLevelHeuristic(List<LowLevelHeuristic> lowLevelHeuristics) {
+	public HHNSGAIIIBuilder setLowLevelHeuristic(List<LowLevelHeuristicJM5> lowLevelHeuristics) {
 		this.lowLevelHeuristics = lowLevelHeuristics;
 		return this;
 	}

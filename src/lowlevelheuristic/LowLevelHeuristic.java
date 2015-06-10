@@ -35,7 +35,7 @@ public class LowLevelHeuristic {
      * Sliding window size.
      */
     private static int W = 0;
-    
+
     private static double c = 0;
 
     /**
@@ -144,7 +144,7 @@ public class LowLevelHeuristic {
         if (executed) {
             this.elapsedTime = 0;
         } else {
-            this.elapsedTime += 1;
+            this.elapsedTime += 1D;
         }
     }
 

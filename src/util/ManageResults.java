@@ -70,7 +70,7 @@ public class ManageResults {
      * @return the paths containing the results based on the instances and algorithms passed
      */
     private static List<Path> getPaths(List<String> instances, List<String> algorithms) {
-        List<Path> paths = new ArrayList<>();
+        final List<Path> paths = new ArrayList<>();
         for (String instance : instances) {
             for (String algorithm : algorithms) {
                 String path = "experiment/" + instance + "/" + algorithm;

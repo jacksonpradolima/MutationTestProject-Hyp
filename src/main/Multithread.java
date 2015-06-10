@@ -289,6 +289,7 @@ public class Multithread {
                     ProcessBuilder builder = new ProcessBuilder("java",
                             "-classpath",
                             "dist/MutationTestProject-Hyp.jar",
+                            "-Xmx5G",
                             getExperimentClassName(algorithm),
                             "" + instance,
                             "" + algorithm,
@@ -344,7 +345,7 @@ public class Multithread {
 
     private static String getExperimentClassName(final HyperHeuristicType algorithm) {
         String experimentName = "main.MTTest45";
-        if (algorithm.name().equals("NSGAIII") || algorithm.name().equals("hhNSGAIII")) {
+        if (algorithm.name().equals("NSGAIII") || algorithm.name().equals("HHNSGAIII")) {
             experimentName = "main.MTTest50";
         }
         return experimentName;
