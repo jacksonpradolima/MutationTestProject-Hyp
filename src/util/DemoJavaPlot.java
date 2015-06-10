@@ -55,7 +55,7 @@ public class DemoJavaPlot {
 
         //simple();
         //simple3D();
-        //defaultTerminal(path);
+        defaultTerminal(path);
         //EPSTerminal(path);
         //SVGTerminal(path);
         //JPlotTerminal(path);
@@ -64,7 +64,7 @@ public class DemoJavaPlot {
         //demo();
         //demo2();
         //demo3();
-        demo4();
+        //demo4();
     }
 
     /* This is a very simple plot to demonstrate JavaPlot graphs */
