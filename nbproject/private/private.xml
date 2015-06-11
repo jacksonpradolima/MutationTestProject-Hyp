@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/experiment/Parameters.java</file>
-            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/algorithm/hhspea2/HHSPEA2_main.java</file>
-            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/main/MTTest45.java</file>
-            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/algorithm/hhspea2/HHSPEA2.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/util/GeneratePlot.java</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/plots/plot.png</file>
+            <file>file:/C:/Users/Prado%20Lima/Documents/NetBeansProjects/MutationTestProject-Hyp/src/util/DemoJavaPlot.java</file>
         </group>
     </open-files>
 </project-private>

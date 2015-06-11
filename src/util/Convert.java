@@ -63,6 +63,26 @@ public class Convert {
 
         return result;
     }
+    
+     /**
+     * Convert from string array to abs double array
+     *
+     * @param array Array will be converted
+     * @return A abs double array
+     */
+    public static double[] toAbsDoubleArray(String[] array) {
+        if (array == null) {
+            throw new IllegalArgumentException("array shouldn't be null");
+        }
+
+        double[] result = new double[array.length];
+
+        for (int i = 0; i < array.length; i++) {
+            result[i] = Math.abs(Double.valueOf(array[i].trim()));
+        }
+
+        return result;
+    }
 
     /**
      * Convert from string array to int array

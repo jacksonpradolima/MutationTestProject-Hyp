@@ -48,6 +48,7 @@ public class DemoJavaPlot {
             path = args[0];
         }
 
+        // It can be null
         if (path == null) {
             // gnuplot aplication
             path = "C:\\Program Files (x86)\\gnuplot\\bin\\gnuplot.exe";
@@ -55,9 +56,9 @@ public class DemoJavaPlot {
 
         //simple();
         //simple3D();
-        defaultTerminal(path);
+        //defaultTerminal(path);
         //EPSTerminal(path);
-        //SVGTerminal(path);
+        SVGTerminal(path);
         //JPlotTerminal(path);
         //serialization(defaultTerminal(path));
         //file();

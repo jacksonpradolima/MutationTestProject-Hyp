@@ -71,6 +71,29 @@ public class InstanceReader {
     public int readInt() {
         return Integer.valueOf(readLine());
     }
+    
+    public double[][] readDoubleMatrix(String separator, boolean isAbsValues) throws IOException {
+        int rows;
+        int columns;
+        try (BufferedReader bufferAuxReader = new BufferedReader(new FileReader(filename))) {
+            rows = 0;
+            columns = 0;
+            // pre-read in the number of rows/columns
+            // Loop over lines in the file and print them.
+            while (true) {
+                ++rows;
+                String line = bufferAuxReader.readLine();
+                if (line == null) {
+                    --rows;
+                    break;
+                }
+                
+                columns = line.split(separator).length;
+            }
+        }
+
+        return isAbsValues ? readAbsDoubleMatrix(rows, rows, separator) : readDoubleMatrix(rows, columns, separator);
+    }
 
     public double[][] readDoubleMatrix(int i, int j) {
         return readDoubleMatrix(i, j, ",");
@@ -82,6 +105,17 @@ public class InstanceReader {
         for (int k = 0; k < i; k++) {
             String[] split = readLine().split(separator);
             result[k] = Convert.toDoubleArray(split);
+        }
+
+        return result;
+    }
+    
+     public double[][] readAbsDoubleMatrix(int i, int j, String separator) {
+        double[][] result = new double[i][j];
+
+        for (int k = 0; k < i; k++) {
+            String[] split = readLine().split(separator);
+            result[k] = Convert.toAbsDoubleArray(split);
         }
 
         return result;
