@@ -228,7 +228,7 @@ public class ManageResults {
             }
         }
 
-        ExperimentUtil.removeRepeated(nonDominatedSolutionList);
+        ExperimentUtil.removeRepeatedFinal(nonDominatedSolutionList);
 
         //read PFtrue
         double[][] trueFront = nonDominatedSolutionList.writeObjectivesToMatrix();

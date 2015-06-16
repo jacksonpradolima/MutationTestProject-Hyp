@@ -20,32 +20,38 @@ import util.ManageResults;
 public class HyperHeuristicsResults {
 
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException {
-
+        int numberOfObjectives = 2;
+        int numberOfExecutions = 30;        
+        
+        ManageResults manageResults = new ManageResults();
         List<String> instances = new ArrayList<>();
-
-        //instances.add("find");
-        //instances.add("fourballs");
+        
+        instances.add("fourballs");
         instances.add("guizzo_cas");
-        //instances.add("guizzo_james");
-        //instances.add("guizzo_save");
-        //instances.add("guizzo_weatherstation");
-        //instances.add("mid");
-        //instances.add("trityp");
+        instances.add("guizzo_james");
+        instances.add("guizzo_save");
+        instances.add("guizzo_weatherstation");
+        instances.add("mid");
+        instances.add("trityp");
 
         List<String> algorithms = new ArrayList<>();
-        //algorithms.add(HyperHeuristicType.HHIBEA.toString());
+        
         algorithms.add(HyperHeuristicType.HHNSGAII.toString());
-        //algorithms.add(HyperHeuristicType.HHNSGAIII.toString());
-        //algorithms.add(HyperHeuristicType.HHSPEA2.toString());
-
-        int numberOfObjectives = 5;
-        int numberOfExecutions = 30; 
-
-        ManageResults manageResults = new ManageResults();
-
-        manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
-        //calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
-        //calculateKruskalWallisForAlgorithms(instances, algorithms);
-        //calculatePFTrue(instances, algorithms, numberOfExecutions);
+        algorithms.add("NSGAII");
+        algorithms.add("R-HHNSGAII");
+                       
+        //manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
+        //manageResults.calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
+        //manageResults.calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
+        //manageResults.calculatePFTrue(instances, algorithms);
+        
+        algorithms = new ArrayList<>();
+        
+        algorithms.add(HyperHeuristicType.HHSPEA2.toString());
+        algorithms.add("SPEA2");
+        algorithms.add("R-HHSPEA2");
+                        
+        //manageResults.calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
+        manageResults.calculatePFTrue(instances, algorithms);
     }
 }
