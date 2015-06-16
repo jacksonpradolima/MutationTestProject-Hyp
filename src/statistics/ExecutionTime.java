@@ -25,21 +25,9 @@ public class ExecutionTime {
 
         List<String> configurations = new ArrayList<>();
 
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.005_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.01_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.01_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.01_SinglePointCrossover_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.01_SinglePointCrossover_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.01_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.005_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.01_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.005_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.005_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.01_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.1_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.8_0.01_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
-        configurations.add("experiment/find/NSGAIII/F2/50_100_0.9_0.01_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
-
+        configurations.add("experiment/guizzo_weatherstation/HHNSGAII/ChoiceFunction/200-600-0.05");
+        configurations.add("experiment/guizzo_weatherstation/HHNSGAII/ChoiceFunction/200-600-0.005");        
+        
         executionTimeAverage(configurations);
     }
 
