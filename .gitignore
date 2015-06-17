@@ -7,3 +7,8 @@
 /plots/
 /tuning/
 /nbproject/
+GNUPLOT_SCRIPT.txt
+build.xml
+jMetal.log
+FUN_NSGAII
+RunningInfo.txt
