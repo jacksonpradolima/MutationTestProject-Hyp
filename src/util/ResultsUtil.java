@@ -330,6 +330,7 @@ public class ResultsUtil {
 
         //calculate PFtrue
         for (Path path : paths) {
+            System.out.println(path);
             SolutionSet solutions = metricsUtil.readNonDominatedSolutionSet(path + "/FUN_All");
             for (int i = 0; i < solutions.size(); i++) {
                 nonDominatedSolutionList.add(solutions.get(i));

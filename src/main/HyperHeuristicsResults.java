@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import util.ManageResults;
+import static util.ManageResults.calculateKruskalWallisForAlgorithms;
+import static util.ManageResults.calculatePFTrue;
 
 /**
  *
@@ -23,29 +25,30 @@ public class HyperHeuristicsResults {
 
         List<String> instances = new ArrayList<>();
 
-        //instances.add("find");
-        //instances.add("fourballs");
+        instances.add("fourballs");
         instances.add("guizzo_cas");
-        //instances.add("guizzo_james");
-        //instances.add("guizzo_save");
-        //instances.add("guizzo_weatherstation");
-        //instances.add("mid");
-        //instances.add("trityp");
+        instances.add("guizzo_james");
+        instances.add("guizzo_save");
+        instances.add("guizzo_weatherstation");
+        instances.add("mid");
+        instances.add("trityp");
 
         List<String> algorithms = new ArrayList<>();
-        //algorithms.add(HyperHeuristicType.HHIBEA.toString());
-        algorithms.add(HyperHeuristicType.HHNSGAII.toString());
-        //algorithms.add(HyperHeuristicType.HHNSGAIII.toString());
-        //algorithms.add(HyperHeuristicType.HHSPEA2.toString());
+        algorithms.add(HyperHeuristicType.HHIBEA.toString());
+        algorithms.add("IBEA");
+        algorithms.add("R-HHIBEA");
 
-        int numberOfObjectives = 5;
-        int numberOfExecutions = 30; 
+//        algorithms.add(HyperHeuristicType.HHNSGAIII.toString());
+//        algorithms.add("NSGAIII");
+//        algorithms.add("R-HHNSGAIII");
+        int numberOfObjectives = 2;
+        int numberOfExecutions = 30;
 
         ManageResults manageResults = new ManageResults();
 
-        manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
+        //manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
         //calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
-        //calculateKruskalWallisForAlgorithms(instances, algorithms);
-        //calculatePFTrue(instances, algorithms, numberOfExecutions);
+        //calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
+        calculatePFTrue(instances, algorithms);
     }
 }

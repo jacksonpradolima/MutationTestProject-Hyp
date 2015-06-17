@@ -69,7 +69,7 @@ public class ManageResults {
      * @param algorithms
      * @return the paths containing the results based on the instances and algorithms passed
      */
-    private static List<Path> getPaths(List<String> instances, List<String> algorithms) {
+    static List<Path> getPaths(List<String> instances, List<String> algorithms) {
         final List<Path> paths = new ArrayList<>();
         for (String instance : instances) {
             for (String algorithm : algorithms) {
@@ -250,6 +250,7 @@ public class ManageResults {
                 writer.write(path.getParent().toString() + ": ");
                 writer.write(solutions.length + " (" + count + ")\n\n");
             }
+            writer.close();
         }
     }
     

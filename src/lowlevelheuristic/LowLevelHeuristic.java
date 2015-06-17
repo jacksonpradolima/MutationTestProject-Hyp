@@ -29,7 +29,7 @@ public class LowLevelHeuristic {
     /**
      * Elapsed time weight.
      */
-    private double beta = 0.00005;
+    private double beta = 0.005;
 
     /**
      * Sliding window size.

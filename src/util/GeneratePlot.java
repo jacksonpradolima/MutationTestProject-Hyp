@@ -11,10 +11,14 @@ import com.panayotis.gnuplot.style.NamedPlotColor;
 import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Style;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
+import experiment.HyperHeuristicType;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
@@ -24,15 +28,15 @@ import javax.imageio.ImageIO;
 public class GeneratePlot {
 
     public static void main(String[] args) throws IOException {
-        plot2lines("Escore de Mutação", "Número de Casos de Teste",
-                0.0, 1.0,
+            plot2lines("Escore de Mutação", "Número de Casos de Teste",
+                    0.0, 1.0,
                 0.0, 30.0,
                 "NSGA", "SPEA2",
-                "experiment/guizzo_cas/NSGAII/F2/100_100_0.9_0.1_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30/FUN_All.txt",
-                "experiment/guizzo_cas/SPEA2/F2/200_100_0.9_0.1_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30/FUN_All.txt",
-                "Fronteira de Pareto",
-                System.getProperty("user.dir") + "/plots/plot.png", "png");
-    }
+                    "experiment/guizzo_cas/NSGAII/F2/100_100_0.9_0.1_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30/FUN_All.txt",
+                    "experiment/guizzo_cas/SPEA2/F2/200_100_0.9_0.1_UniformCrossoverBinary_SwapMutationBinary_BinaryTournament2_30/FUN_All.txt",
+                    "Fronteira de Pareto",
+                    System.getProperty("user.dir") + "/plots/plot.png", "png");
+        }
 
     public static void plot2lines(
             String labelX, String labelY,

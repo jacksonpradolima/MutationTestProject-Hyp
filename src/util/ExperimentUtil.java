@@ -112,6 +112,20 @@ public class ExperimentUtil {
         int end = path.indexOf(".txt");
         return path.substring(10, end);
     }
+    
+    //for jmetal 4.5
+    public static void removeRepeatedFinal(NonDominatedSolutionList nonDominatedSolutions) {
+        for (int i = 0; i < nonDominatedSolutions.size() - 1; i++) {
+            String solucao = nonDominatedSolutions.toString();
+            for (int j = i + 1; j < nonDominatedSolutions.size(); j++) {
+                String solucaoB = nonDominatedSolutions.get(j).toString();
+                if (solucao.equals(solucaoB)) {
+                    nonDominatedSolutions.remove(j);
+                    j--;
+                }
+            }
+        }
+    }
 
     //for jmetal 4.5
     public static void removeRepeated(NonDominatedSolutionList nonDominatedSolutions) {

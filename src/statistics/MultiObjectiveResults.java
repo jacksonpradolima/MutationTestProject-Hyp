@@ -6,19 +6,10 @@
 package statistics;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import jmetal.core.Solution;
-import jmetal.core.SolutionSet;
-import jmetal.qualityIndicator.util.MetricsUtil;
-import jmetal.util.NonDominatedSolutionList;
-import jmetal.util.comparators.EqualSolutions;
 import util.ResultsUtil;
 
 /**

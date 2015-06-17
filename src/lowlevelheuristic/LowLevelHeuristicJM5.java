@@ -31,7 +31,7 @@ public class LowLevelHeuristicJM5 {
     /**
      * Elapsed time weight.
      */
-    private double beta = 0.00005;
+    private double beta = 0.05;
 
     /**
      * Sliding window size.
