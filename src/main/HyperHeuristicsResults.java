@@ -22,9 +22,12 @@ import static util.ManageResults.calculatePFTrue;
 public class HyperHeuristicsResults {
 
     public static void main(String[] args) throws IOException, FileNotFoundException, InterruptedException {
-
+        int numberOfObjectives = 2;
+        int numberOfExecutions = 30;        
+        
+        ManageResults manageResults = new ManageResults();
         List<String> instances = new ArrayList<>();
-
+        
         instances.add("fourballs");
         instances.add("guizzo_cas");
         instances.add("guizzo_james");
@@ -41,10 +44,6 @@ public class HyperHeuristicsResults {
 //        algorithms.add(HyperHeuristicType.HHNSGAIII.toString());
 //        algorithms.add("NSGAIII");
 //        algorithms.add("R-HHNSGAIII");
-        int numberOfObjectives = 2;
-        int numberOfExecutions = 30;
-
-        ManageResults manageResults = new ManageResults();
 
         //manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
         //calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
