@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/jmetal-5.0/jmetal-core-5.0-Beta-29.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-5.0/jmetal-exec-5.0-Beta-29.jar"/>
 	<classpathentry kind="lib" path="lib/jmetal-5.0/jmetal-problem-5.0-Beta-29.jar"/>
+	<classpathentry kind="lib" path="lib/JavaPlot.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
