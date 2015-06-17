@@ -115,9 +115,11 @@ public class HHSPEA2 extends HyperHeuristic {
                 problem_.evaluateConstraints(offSpring[0]);
                 offSpringSolutionSet.add(offSpring[0]);
                 evaluations++;
+                
+                Solution[] newOffSpring = {offSpring[0]};
 
                 //Update rank
-                applyingHeuristic.updateRank(parents, offSpring, heuristicFunction, getLowLevelHeuristics());
+                applyingHeuristic.updateRank(parents, newOffSpring, heuristicFunction, getLowLevelHeuristics());
 
                 //Update time elapsed from heuristics not executed
                 applyingHeuristic.updateElapseTime(getLowLevelHeuristics(), applyingHeuristic);
