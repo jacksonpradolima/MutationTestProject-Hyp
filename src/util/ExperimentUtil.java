@@ -141,6 +141,22 @@ public class ExperimentUtil {
         }
     }
     
+<<<<<<< HEAD
+=======
+    public static void removeRepeatedFinal(NonDominatedSolutionList nonDominatedSolutions) {
+        for (int i = 0; i < nonDominatedSolutions.size() - 1; i++) {
+            String solucao = nonDominatedSolutions.get(i).toString();
+            for (int j = i + 1; j < nonDominatedSolutions.size(); j++) {
+                String solucaoB = nonDominatedSolutions.get(j).toString();
+                if (solucao.equals(solucaoB)) {
+                    nonDominatedSolutions.remove(j);
+                    j--;
+                }
+            }
+        }
+    }
+
+>>>>>>> 8c0bfebb9ce8908327fddd6af0bf9d109ff5e4f4
     //for jmetal 5.0
     public static void removeRepeated(NonDominatedSolutionListArchive nonDominatedSolutions) {
         List<Solution> listSolutions = nonDominatedSolutions.getSolutionList();

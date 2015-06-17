@@ -25,12 +25,18 @@ public class ExecutionTime {
 
         List<String> configurations = new ArrayList<>();
 
+<<<<<<< HEAD
         configurations.add("experiment/fourballs/NSGAIII/200_600_0.8_0.005_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
         configurations.add("experiment/fourballs/NSGAIII/200_600_0.8_0.01_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
         configurations.add("experiment/fourballs/NSGAIII/200_600_0.8_0.01_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
         configurations.add("experiment/fourballs/NSGAIII/200_600_0.9_0.01_UniformCrossoverBinary_BitFlipMutation_BinaryTournament2_30");
         configurations.add("experiment/fourballs/NSGAIII/200_600_0.9_0.01_SinglePointCrossover_BitFlipMutation_BinaryTournament2_30");
 
+=======
+        configurations.add("experiment/guizzo_weatherstation/HHNSGAII/ChoiceFunction/200-600-0.05");
+        configurations.add("experiment/guizzo_weatherstation/HHNSGAII/ChoiceFunction/200-600-0.005");        
+        
+>>>>>>> 8c0bfebb9ce8908327fddd6af0bf9d109ff5e4f4
         executionTimeAverage(configurations);
     }
 

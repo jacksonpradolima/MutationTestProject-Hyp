@@ -4,6 +4,10 @@
 /bin/
 /results/
 /experiment2/
+<<<<<<< HEAD
 /plots/
 /tuning/
 /nbproject/
+=======
+/plots/
+>>>>>>> 8c0bfebb9ce8908327fddd6af0bf9d109ff5e4f4

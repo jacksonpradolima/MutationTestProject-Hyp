@@ -37,6 +37,7 @@ public class HyperHeuristicsResults {
         instances.add("trityp");
 
         List<String> algorithms = new ArrayList<>();
+<<<<<<< HEAD
         algorithms.add(HyperHeuristicType.HHIBEA.toString());
         algorithms.add("IBEA");
         algorithms.add("R-HHIBEA");
@@ -49,5 +50,25 @@ public class HyperHeuristicsResults {
         //calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
         //calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
         calculatePFTrue(instances, algorithms);
+=======
+        
+        algorithms.add(HyperHeuristicType.HHNSGAII.toString());
+        algorithms.add("NSGAII");
+        algorithms.add("R-HHNSGAII");
+                       
+        //manageResults.calculateHypervolumeResults(instances, algorithms, numberOfObjectives, numberOfExecutions);
+        //manageResults.calculateKruskalWallisForTuning(instances, algorithms, numberOfExecutions);
+        //manageResults.calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
+        //manageResults.calculatePFTrue(instances, algorithms);
+        
+        algorithms = new ArrayList<>();
+        
+        algorithms.add(HyperHeuristicType.HHSPEA2.toString());
+        algorithms.add("SPEA2");
+        algorithms.add("R-HHSPEA2");
+                        
+        //manageResults.calculateKruskalWallisForAlgorithms(instances, algorithms, numberOfExecutions);
+        manageResults.calculatePFTrue(instances, algorithms);
+>>>>>>> 8c0bfebb9ce8908327fddd6af0bf9d109ff5e4f4
     }
 }
