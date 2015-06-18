@@ -70,8 +70,11 @@ public class MTTest45 {
         /* Add the operators to the algorithm*/
         algorithm.addOperator("selection", selection);
 
-        // Alterar e usar a partir do arquivo de configuração
-        algorithm.setInputParameter("heuristicFunction", Settings.HEURISTIC_FUNCTION);
+        if (mutationParameters.getAlgo().toString().startsWith("RHH")) {
+            algorithm.setInputParameter("heuristicFunction", HeuristicFunctionType.Random);
+        } else {
+            algorithm.setInputParameter("heuristicFunction", HeuristicFunctionType.ChoiceFunction);
+        }
 
         HashMap parametersOperators;
 
@@ -96,7 +99,7 @@ public class MTTest45 {
                 }
                 name += "]";
                 lowLevelHeuristicNames[lowLevelHeuristicNumber - 1] = name;
-
+                parameters.put("beta", mutationParameters.getBeta());
                 parameters.put("name", name);
 
                 // Crossover operator
@@ -112,7 +115,7 @@ public class MTTest45 {
         }
 
         NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
-        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s-%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations(), String.valueOf(mutationParameters.getBeta()));
         List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
         FileWriter fileWriter = new FileWriter(path + "/HHResults");
 

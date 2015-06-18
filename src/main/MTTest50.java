@@ -33,11 +33,11 @@ public class MTTest50 {
         //select problem
         Problem problem = new MTNSGAIII(mutationParameters.getInstance());
 
-        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem, mutationParameters.getCrossoverOperator(), mutationParameters.getMutationOperator(), Settings.HEURISTIC_FUNCTION);
+        Algorithm algorithm = ExperimentUtil.algorithmBuilder(mutationParameters, problem, mutationParameters.getCrossoverOperator(), mutationParameters.getMutationOperator());
 
         //NonDominatedSolutionList nonDominatedSolutions = new NonDominatedSolutionList();
         NonDominatedSolutionListArchive nonDominatedSolutions = new NonDominatedSolutionListArchive();
-        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s-%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations(), String.valueOf(mutationParameters.getBeta()));
         List<Integer> numberOfTimesAppliedAllRuns = new ArrayList<>();
         FileWriter fileWriter = new FileWriter(path + "/HHResults");
 

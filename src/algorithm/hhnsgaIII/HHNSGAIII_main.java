@@ -45,7 +45,7 @@ public class HHNSGAIII_main {
         Algorithm algorithm = new HHNSGAIIIBuilder(problem)
                 .setPopulationSize(200)
                 .setSelectionOperator(new BinaryTournamentSelection())
-                .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations))
+                .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations, 0.05))
                 .setHeuristicFunction(HeuristicFunctionType.ChoiceFunction)
                 .setMaxEvaluations(200 * 600)
                 .setDivisions(100)

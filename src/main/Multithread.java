@@ -100,7 +100,13 @@ public class Multithread {
                     for (final int populationSize : Settings.POPULATION_SIZE) {
                         for (final int generations : Settings.GENERATIONS) {
                             for (final String selectionOperator : Settings.SELECTION_OPERATORS) {
-                                createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator, Settings.HEURISTIC_FUNCTION);
+                                if (!algorithm.toString().startsWith("RHH")) {
+                                    for (final double beta : Settings.BETA) {
+                                        createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator, beta);
+                                    }
+                                } else {
+                                    createThread(instance, algorithm, populationSize, generations, Settings.CROSSOVER_OPERATORS, Settings.MUTATION_OPERATORS, Settings.EXECUTIONS, selectionOperator, 0);
+                                }
                             }
                         }
                     }
@@ -271,12 +277,13 @@ public class Multithread {
         final String crossoverOperator = String.valueOf(split[5]);
         final String mutationOperator = String.valueOf(split[6]);
         final int executions = Integer.valueOf(split[7]);
+        final double beta = Double.valueOf(split[8]);
 
-        createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, context, Settings.HEURISTIC_FUNCTION);
+        createThread(instance, algorithm, populationSize, generations, crossoverOperator, mutationOperator, executions, context, beta);
     }
 
-    private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator, final HeuristicFunctionType heuristicFunction) {
-        
+    private static synchronized void createThread(final String instance, final HyperHeuristicType algorithm, final int populationSize, final int generations, final String crossoverOperator, final String mutationOperator, final int executions, final String selectionOperator, final double beta) {
+
         final String context = Parameters.generateAlgorithmId(algorithm, populationSize, generations, "Crossovers_" + crossoverOperator.replace(",", "_"), "Mutations_" + mutationOperator.replace(",", "_"), executions, selectionOperator);
 
         final Thread thread = new Thread(new Runnable() {
@@ -300,11 +307,10 @@ public class Multithread {
                             "" + executions,
                             "" + context,
                             "" + selectionOperator,
-                            "" + heuristicFunction
+                            "" + beta
                     );
 
-                    String pathFile = String.format("experiment/%s/%s/%s/%s-%s", getInstanceName(instance), algorithm, heuristicFunction, populationSize, generations);
-
+                    String pathFile = String.format("experiment/%s/%s/%s-%s-%s", getInstanceName(instance), algorithm, populationSize, generations, String.valueOf(beta));
                     final File destination = new File(String.format("%s/SYSTEM_OUTPUT.txt", pathFile));
                     final File errorDestination = new File(String.format("%s/SYSTEM_ERROR.txt", pathFile));
 
@@ -345,7 +351,7 @@ public class Multithread {
 
     private static String getExperimentClassName(final HyperHeuristicType algorithm) {
         String experimentName = "main.MTTest45";
-        if (algorithm.name().equals("NSGAIII") || algorithm.name().equals("HHNSGAIII")) {
+        if (algorithm.name().equals("NSGAIII") || algorithm.name().equals("HHNSGAIII") || algorithm.name().equals("RHHNSGAIII")) {
             experimentName = "main.MTTest50";
         }
         return experimentName;

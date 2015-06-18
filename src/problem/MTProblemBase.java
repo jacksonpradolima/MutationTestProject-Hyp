@@ -47,7 +47,7 @@ public class MTProblemBase {
     }
 
     public double getTestScore(Binary s) {
-        return (double) (getNumberOfSelectedTestSuite(s) / this.numberOfTestSuite);
+        return getNumberOfSelectedTestSuite(s);
     }
 
     public double getMutantionScore(Binary s) {

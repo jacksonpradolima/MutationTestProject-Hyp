@@ -12,7 +12,7 @@ import lowlevelheuristic.LowLevelHeuristic;
 public class HyperHeuristicUtil {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<LowLevelHeuristic> getLowLevelHeuristics(String[] crossovers, String[] mutations) throws JMException {
+	public static List<LowLevelHeuristic> getLowLevelHeuristics(String[] crossovers, String[] mutations, double beta) throws JMException {
 		List<LowLevelHeuristic> list = new ArrayList<LowLevelHeuristic>();
 		
 		int id = 1;
@@ -28,7 +28,7 @@ public class HyperHeuristicUtil {
 				
 				lowLevelParameters.put("name", name);
 				lowLevelParameters.put("crossover", CrossoverFactory.getCrossoverOperator(crossover, param));
-				
+				lowLevelParameters.put("beta", beta);
 				if (mutation != null) {
 					lowLevelParameters.put("mutation", MutationFactory .getMutationOperator(mutation, param));
 				}

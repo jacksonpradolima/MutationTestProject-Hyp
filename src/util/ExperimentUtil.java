@@ -104,6 +104,11 @@ public class ExperimentUtil {
         if (args[8] != null && !args[8].trim().equals("")) {
             mutationParameters.setSelectionOperator(args[8]);
         }
+        
+        //beta
+        if (args[9] != null && !args[9].trim().equals("")) {
+            mutationParameters.setBeta(Double.parseDouble(args[9]));
+        }
 
         return mutationParameters;
     }
@@ -112,7 +117,7 @@ public class ExperimentUtil {
         int end = path.indexOf(".txt");
         return path.substring(10, end);
     }
-    
+
     //for jmetal 4.5
     public static void removeRepeatedFinal(NonDominatedSolutionList nonDominatedSolutions) {
         for (int i = 0; i < nonDominatedSolutions.size() - 1; i++) {
@@ -140,7 +145,7 @@ public class ExperimentUtil {
             }
         }
     }
-    
+
     //for jmetal 5.0
     public static void removeRepeated(NonDominatedSolutionListArchive nonDominatedSolutions) {
         List<Solution> listSolutions = nonDominatedSolutions.getSolutionList();
@@ -156,7 +161,7 @@ public class ExperimentUtil {
         }
     }
 
-    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem, String[] crossovers, String[] mutations, HeuristicFunctionType heuristicFunctiontype) throws JMException {
+    public static Algorithm algorithmBuilder(Parameters mutationParameters, Problem problem, String[] crossovers, String[] mutations) throws JMException {
 
         Algorithm algorithm = null;
 
@@ -181,8 +186,18 @@ public class ExperimentUtil {
             algorithm = new HHNSGAIIIBuilder(problem)
                     .setPopulationSize(mutationParameters.getPopulationSize())
                     .setSelectionOperator(selection)
-                    .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations))
-                    .setHeuristicFunction(heuristicFunctiontype)
+                    .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations, mutationParameters.getBeta()))
+                    .setHeuristicFunction(HeuristicFunctionType.ChoiceFunction)
+                    .setMaxEvaluations(maxEvaluations)
+                    .setDivisions(mutationParameters.getPopulationSize())
+                    .setBeta(mutationParameters.getBeta())
+                    .build();
+        } else if (mutationParameters.getAlgo().name().equalsIgnoreCase("RHHNSGAIII")) {
+            algorithm = new HHNSGAIIIBuilder(problem)
+                    .setPopulationSize(mutationParameters.getPopulationSize())
+                    .setSelectionOperator(selection)
+                    .setLowLevelHeuristic(HyperHeuristicUtilJM5.getLowLevelHeuristics(crossovers, mutations, 0))
+                    .setHeuristicFunction(HeuristicFunctionType.Random)
                     .setMaxEvaluations(maxEvaluations)
                     .setDivisions(mutationParameters.getPopulationSize())
                     .build();
@@ -211,7 +226,7 @@ public class ExperimentUtil {
     }
 
     public static void printFinalSolutions(NonDominatedSolutionList nonDominatedSolutions, Parameters mutationParameters) {
-        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s-%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations(), String.valueOf(mutationParameters.getBeta()));
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";
@@ -220,7 +235,7 @@ public class ExperimentUtil {
     }
 
     public static void printFinalSolutions(NonDominatedSolutionListArchive nonDominatedSolutions, Parameters mutationParameters) {
-        String path = String.format("experiment/%s/%s/%s/%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), Settings.HEURISTIC_FUNCTION, mutationParameters.getPopulationSize(), mutationParameters.getGenerations());
+        String path = String.format("experiment/%s/%s/%s-%s-%s", ExperimentUtil.getInstanceName(mutationParameters.getInstance()), mutationParameters.getAlgo(), mutationParameters.getPopulationSize(), mutationParameters.getGenerations(), String.valueOf(mutationParameters.getBeta()));
         ExperimentUtil.removeRepeated(nonDominatedSolutions);
         String pathFunAll = path + "/FUN_All";
         String pathVarAll = path + "/VAR_All";

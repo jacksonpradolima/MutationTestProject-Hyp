@@ -15,7 +15,7 @@ import org.uma.jmetal.operator.impl.mutation.BitFlipMutation;
 public class HyperHeuristicUtilJM5 {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List<LowLevelHeuristicJM5> getLowLevelHeuristics(String[] crossovers, String[] mutations) {
+	public static List<LowLevelHeuristicJM5> getLowLevelHeuristics(String[] crossovers, String[] mutations, double beta) {
 		List<LowLevelHeuristicJM5> list = new ArrayList<LowLevelHeuristicJM5>();
 		
 		int id = 1;
@@ -31,7 +31,8 @@ public class HyperHeuristicUtilJM5 {
 				
 				lowLevelParameters.put("name", name);
 				lowLevelParameters.put("crossover", getCrossoverOperator(crossover, param));
-				
+				lowLevelParameters.put("beta", beta);
+                                
 				if (mutation != null) {
 					lowLevelParameters.put("mutation", getMutationOperator(mutation, param));
 				}
@@ -50,7 +51,7 @@ public class HyperHeuristicUtilJM5 {
 	public static Object getMutationOperator(String name, HashMap parameters) {
 		if (name.equalsIgnoreCase("BitFlipMutation")){
 			return new BitFlipMutation(1);
-		}else if (name.equalsIgnoreCase("SwapMutationBinary4NSGAIII")){
+		}else if (name.equalsIgnoreCase("SwapMutationBinary")){
 			return new SwapMutationBinary4NSGAIII(1.0);
 		}
 		return null;
@@ -59,9 +60,9 @@ public class HyperHeuristicUtilJM5 {
 	public static Object getCrossoverOperator(String name, HashMap parameters) {
 	    if (name.equalsIgnoreCase("SinglePointCrossover")){
 	      return new SinglePointCrossover(1.0);
-	    }else if (name.equalsIgnoreCase("UniformCrossoverBinary4NSGAIII")){
+	    }else if (name.equalsIgnoreCase("UniformCrossoverBinary")){
 	    	return new UniformCrossoverBinary4NSGAIII(parameters);
-	    }else if (name.equalsIgnoreCase("TwoPointsCrossoverBinary4NSGAIII")){
+	    }else if (name.equalsIgnoreCase("TwoPointsCrossoverBinary")){
 	    	return new TwoPointsCrossoverBinary4NSGAIII(parameters);
 	    }
 		return null;
