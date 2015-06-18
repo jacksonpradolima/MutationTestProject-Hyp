@@ -34,8 +34,16 @@ public class Normalization {
         instances.add("trityp");
 
         List<String> algorithms = new ArrayList<>();
-        algorithms.add("IBEA");
-        algorithms.add("NSGAIII");
+        algorithms.add("HHIBEA");
+        algorithms.add("HHNSGAIII");
+        algorithms.add("HHNSGAII");
+        algorithms.add("HHSPEA2");
+        algorithms.add("R-HHSPEA2");
+        algorithms.add("R-HHNSGAII");
+        algorithms.add("R-HHIBEA");
+        algorithms.add("R-HHNSGAIII");
+        //algorithms.add("IBEA");
+        //algorithms.add("NSGAIII");
 
         for (String instance : instances) {
             List<String> instancesKruskal = new ArrayList<>();
@@ -49,17 +57,22 @@ public class Normalization {
 
     public static void read(String path, String instance) throws IOException {
         MetricsUtil metricsUtil = new MetricsUtil();
-        SolutionSet solutions = metricsUtil.readNonDominatedSolutionSet(path + "/FUN_All");
-        write(solutions, path, instance);
+        for (int i = 0; i < 30; i++) {
+            String fun = path + "/FUN_" + i;
+            SolutionSet solutions = metricsUtil.readSolutionSet(fun);
+            write(solutions, fun, instance);
+        }
+        String funAll = path + "/FUN_All";
+        SolutionSet solutions = metricsUtil.readSolutionSet(funAll);
+        write(solutions, funAll, instance);
     }
 
-    public static void write(SolutionSet solutions, String path, String instance) throws IOException {
-        FileWriter writer = new FileWriter(path + "/FUN_AllN");
+    public static void write(SolutionSet solutions, String fun, String instance) throws IOException {
+        FileWriter writer = new FileWriter(fun);
         Scanner scanner = new Scanner(new File("instances/" + instance + ".txt"));
         int numberOfTestCases = Integer.valueOf(scanner.nextLine());
         for (int i = 0; i < solutions.size(); i++) {
-            double mutationScore = (double) solutions.get(i).getObjective(1) / (double) numberOfTestCases;
-            solutions.get(i).getObjective(1);
+            double mutationScore = (double) solutions.get(i).getObjective(1) * (double) numberOfTestCases;
             writer.write(solutions.get(i).getObjective(0) + " " + mutationScore + "\n");
         }
         writer.close();
