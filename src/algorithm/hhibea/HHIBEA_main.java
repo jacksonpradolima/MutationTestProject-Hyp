@@ -26,6 +26,7 @@ public class HHIBEA_main {
 	protected static String[] mutations = {
 		"BitFlipMutation", 
 		"SwapMutationBinary",
+		"OneChangeMutation",
 		null
 	};
 	

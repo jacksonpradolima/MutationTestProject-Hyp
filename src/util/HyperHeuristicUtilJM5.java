@@ -7,6 +7,7 @@ import java.util.List;
 import lowlevelheuristic.LowLevelHeuristicJM5;
 import operators.crossover.TwoPointsCrossoverBinary4NSGAIII;
 import operators.crossover.UniformCrossoverBinary4NSGAIII;
+import operators.mutation.OneChangeMutation4NSGAIII;
 import operators.mutation.SwapMutationBinary4NSGAIII;
 
 import org.uma.jmetal.operator.impl.crossover.SinglePointCrossover;
@@ -53,6 +54,8 @@ public class HyperHeuristicUtilJM5 {
 			return new BitFlipMutation(1);
 		}else if (name.equalsIgnoreCase("SwapMutationBinary")){
 			return new SwapMutationBinary4NSGAIII(1.0);
+		}else if (name.equalsIgnoreCase("OneChangeMutation4NSGAIII")){
+			return new OneChangeMutation4NSGAIII(1.0);
 		}
 		return null;
 	}

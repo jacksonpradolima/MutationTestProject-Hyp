@@ -25,6 +25,8 @@ import jmetal.util.Configuration;
 import jmetal.util.JMException;
 
 import java.util.HashMap;
+
+import operators.mutation.OneChangeMutation;
 import operators.mutation.SwapMutationBinary;
 
 /**
@@ -50,6 +52,8 @@ public class MutationFactory {
       return new SwapMutation(parameters);
     else if (name.equalsIgnoreCase("SwapMutationBinary"))
       return new SwapMutationBinary(parameters);
+    else if (name.equalsIgnoreCase("OneChangeMutation"))
+        return new OneChangeMutation(parameters);
     else
     {
       return null;
