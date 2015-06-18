@@ -54,7 +54,7 @@ public class HyperHeuristicUtilJM5 {
 			return new BitFlipMutation(1);
 		}else if (name.equalsIgnoreCase("SwapMutationBinary")){
 			return new SwapMutationBinary4NSGAIII(1.0);
-		}else if (name.equalsIgnoreCase("OneChangeMutation4NSGAIII")){
+		}else if (name.equalsIgnoreCase("OneChangeMutation")){
 			return new OneChangeMutation4NSGAIII(1.0);
 		}
 		return null;
