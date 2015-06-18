@@ -14,5 +14,9 @@ public enum HyperHeuristicType {
     HHIBEA,
     HHNSGAII,
     HHNSGAIII,
-    HHSPEA2
+    HHSPEA2,
+    RHHIBEA,
+    RHHNSGAII,
+    RHHNSGAIII,
+    RHHSPEA2,
 }

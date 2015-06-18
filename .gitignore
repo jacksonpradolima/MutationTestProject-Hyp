@@ -12,3 +12,5 @@ build.xml
 jMetal.log
 FUN_NSGAII
 RunningInfo.txt
+/experimentOld/
+/tuningOld/

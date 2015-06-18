@@ -28,6 +28,7 @@ public class Parameters {
     private String selectionOperator;
     private int executions;
     private String context;
+    private double beta;
 
     //<editor-fold defaultstate="collapsed" desc="Methods">
     public HyperHeuristic getAlgorithmInstance(Problem problem) {
@@ -37,6 +38,12 @@ public class Parameters {
             case HHNSGAII:
                 return new HHNSGAII(problem);
             case HHSPEA2:
+                return new HHSPEA2(problem);
+            case RHHIBEA:
+                return new HHIBEA(problem);
+            case RHHNSGAII:
+                return new HHNSGAII(problem);
+            case RHHSPEA2:
                 return new HHSPEA2(problem);
             default:
                 throw new AssertionError();
@@ -50,6 +57,7 @@ public class Parameters {
         System.out.println("Algorithm: " + getAlgo());
         System.out.println("Population: " + getPopulationSize());
         System.out.println("maxEvaluations: " + getPopulationSize() * getGenerations());
+        System.out.println("beta: " +getBeta());
 
         for (String crossoverOperator1 : crossoverOperator) {
             System.out.println("crossoverOperator: " + crossoverOperator1);
@@ -197,4 +205,11 @@ public class Parameters {
     }
 
     //</editor-fold>
+    public double getBeta() {
+        return beta;
+    }
+
+    public void setBeta(double beta) {
+        this.beta = beta;
+    }
 }

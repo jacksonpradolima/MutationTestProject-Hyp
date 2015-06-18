@@ -51,7 +51,7 @@ public class HHIBEA_main {
 		hh.setInputParameter("heuristicFunction",HeuristicFunctionType.ChoiceFunction);
 		// Add the operators to the algorithm
 		hh.addOperator("selection", new BinaryTournament(parameters));
-		hh.setLowLevelHeuristic(HyperHeuristicUtil.getLowLevelHeuristics(crossovers, mutations));
+		hh.setLowLevelHeuristic(HyperHeuristicUtil.getLowLevelHeuristics(crossovers, mutations, 0.05));
 		
 		// Execute the Algorithm
 		long initTime = System.currentTimeMillis();
