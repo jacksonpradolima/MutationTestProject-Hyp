@@ -32,6 +32,7 @@ public class HHNSGAIII_main {
     protected static String[] mutations = {
         "BitFlipMutation",
         "SwapMutationBinary4NSGAIII",
+        "OneChangeMutation4NSGAIII",
         null
     };
 
